@@ -1,0 +1,800 @@
+make: Nothing to be done for 'all'.
+mkdir -p /home/tyx/POC/poc_new/local/include/mcl
+cp -a include/mcl /home/tyx/POC/poc_new/local/include/
+cp -a include/cybozu /home/tyx/POC/poc_new/local/include/
+mkdir -p /home/tyx/POC/poc_new/local/lib
+cp -a lib/libmcl.a lib/libmcl.so /home/tyx/POC/poc_new/local/lib/
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/tyx/POC/poc_new/mcl/build
+[ 28%] Built target mcl_st
+[ 57%] Built target mcl
+[100%] Built target mclbn256
+[100%] Built target mclbn384
+[100%] Built target mclbn384_256
+[ 28%] Built target mcl_st
+[ 57%] Built target mcl
+[ 71%] Built target mclbn384
+[ 85%] Built target mclbn256
+[100%] Built target mclbn384_256
+Install the project...
+-- Install configuration: "Release"
+-- Installing: /home/tyx/POC/poc_new/local/lib/libmcl.so.1.22
+-- Up-to-date: /home/tyx/POC/poc_new/local/lib/libmcl.so.1
+-- Up-to-date: /home/tyx/POC/poc_new/local/lib/libmcl.so
+-- Installing: /home/tyx/POC/poc_new/local/lib/libmcl.a
+-- Installing: /home/tyx/POC/poc_new/local/lib/libmclbn256.so.1.22
+-- Up-to-date: /home/tyx/POC/poc_new/local/lib/libmclbn256.so.1
+-- Up-to-date: /home/tyx/POC/poc_new/local/lib/libmclbn256.so
+-- Set runtime path of "/home/tyx/POC/poc_new/local/lib/libmclbn256.so.1.22" to ""
+-- Installing: /home/tyx/POC/poc_new/local/lib/libmclbn384.so.1.22
+-- Up-to-date: /home/tyx/POC/poc_new/local/lib/libmclbn384.so.1
+-- Up-to-date: /home/tyx/POC/poc_new/local/lib/libmclbn384.so
+-- Set runtime path of "/home/tyx/POC/poc_new/local/lib/libmclbn384.so.1.22" to ""
+-- Installing: /home/tyx/POC/poc_new/local/lib/libmclbn384_256.so.1.22
+-- Up-to-date: /home/tyx/POC/poc_new/local/lib/libmclbn384_256.so.1
+-- Up-to-date: /home/tyx/POC/poc_new/local/lib/libmclbn384_256.so
+-- Set runtime path of "/home/tyx/POC/poc_new/local/lib/libmclbn384_256.so.1.22" to ""
+-- Up-to-date: /home/tyx/POC/poc_new/local/include/mcl
+-- Up-to-date: /home/tyx/POC/poc_new/local/include/mcl/randgen.hpp
+-- Up-to-date: /home/tyx/POC/poc_new/local/include/mcl/bn512.hpp
+-- Up-to-date: /home/tyx/POC/poc_new/local/include/mcl/util.hpp
+-- Up-to-date: /home/tyx/POC/poc_new/local/include/mcl/vint.hpp
+-- Up-to-date: /home/tyx/POC/poc_new/local/include/mcl/bn_c384.h
+-- Up-to-date: /home/tyx/POC/poc_new/local/include/mcl/fp_tower.hpp
+-- Up-to-date: /home/tyx/POC/poc_new/local/include/mcl/conversion.hpp
+-- Up-to-date: /home/tyx/POC/poc_new/local/include/mcl/lagrange.hpp
+-- Up-to-date: /home/tyx/POC/poc_new/local/include/mcl/bn256.hpp
+-- Up-to-date: /home/tyx/POC/poc_new/local/include/mcl/bn_c256.h
+-- Up-to-date: /home/tyx/POC/poc_new/local/include/mcl/ecparam.hpp
+-- Up-to-date: /home/tyx/POC/poc_new/local/include/mcl/bn.hpp
+-- Up-to-date: /home/tyx/POC/poc_new/local/include/mcl/impl
+-- Up-to-date: /home/tyx/POC/poc_new/local/include/mcl/impl/bn_c_impl.hpp
+-- Up-to-date: /home/tyx/POC/poc_new/local/include/mcl/array.hpp
+-- Up-to-date: /home/tyx/POC/poc_new/local/include/mcl/fp.hpp
+-- Up-to-date: /home/tyx/POC/poc_new/local/include/mcl/bls12_381.hpp
+-- Up-to-date: /home/tyx/POC/poc_new/local/include/mcl/bn.h
+-- Up-to-date: /home/tyx/POC/poc_new/local/include/mcl/she.hpp
+-- Up-to-date: /home/tyx/POC/poc_new/local/include/mcl/ec.hpp
+-- Up-to-date: /home/tyx/POC/poc_new/local/include/mcl/op.hpp
+-- Up-to-date: /home/tyx/POC/poc_new/local/include/mcl/window_method.hpp
+-- Up-to-date: /home/tyx/POC/poc_new/local/include/mcl/bn_c384_256.h
+-- Up-to-date: /home/tyx/POC/poc_new/local/include/mcl/mapto_wb19.hpp
+-- Up-to-date: /home/tyx/POC/poc_new/local/include/mcl/paillier.hpp
+-- Up-to-date: /home/tyx/POC/poc_new/local/include/mcl/operator.hpp
+-- Up-to-date: /home/tyx/POC/poc_new/local/include/mcl/gmp_util.hpp
+-- Up-to-date: /home/tyx/POC/poc_new/local/include/mcl/aggregate_sig.hpp
+-- Up-to-date: /home/tyx/POC/poc_new/local/include/mcl/curve_type.h
+-- Up-to-date: /home/tyx/POC/poc_new/local/include/mcl/elgamal.hpp
+-- Up-to-date: /home/tyx/POC/poc_new/local/include/mcl/bn384.hpp
+-- Up-to-date: /home/tyx/POC/poc_new/local/include/cybozu
+-- Up-to-date: /home/tyx/POC/poc_new/local/include/cybozu/inttype.hpp
+-- Up-to-date: /home/tyx/POC/poc_new/local/include/cybozu/file.hpp
+-- Up-to-date: /home/tyx/POC/poc_new/local/include/cybozu/benchmark.hpp
+-- Up-to-date: /home/tyx/POC/poc_new/local/include/cybozu/mutex.hpp
+-- Up-to-date: /home/tyx/POC/poc_new/local/include/cybozu/serializer.hpp
+-- Up-to-date: /home/tyx/POC/poc_new/local/include/cybozu/link_ssleay32.hpp
+-- Up-to-date: /home/tyx/POC/poc_new/local/include/cybozu/link_libeay32.hpp
+-- Up-to-date: /home/tyx/POC/poc_new/local/include/cybozu/time.hpp
+-- Up-to-date: /home/tyx/POC/poc_new/local/include/cybozu/test.hpp
+-- Up-to-date: /home/tyx/POC/poc_new/local/include/cybozu/unordered_map.hpp
+-- Up-to-date: /home/tyx/POC/poc_new/local/include/cybozu/xorshift.hpp
+-- Up-to-date: /home/tyx/POC/poc_new/local/include/cybozu/itoa.hpp
+-- Up-to-date: /home/tyx/POC/poc_new/local/include/cybozu/exception.hpp
+-- Up-to-date: /home/tyx/POC/poc_new/local/include/cybozu/atomic.hpp
+-- Up-to-date: /home/tyx/POC/poc_new/local/include/cybozu/option.hpp
+-- Up-to-date: /home/tyx/POC/poc_new/local/include/cybozu/endian.hpp
+-- Up-to-date: /home/tyx/POC/poc_new/local/include/cybozu/array.hpp
+-- Up-to-date: /home/tyx/POC/poc_new/local/include/cybozu/stream.hpp
+-- Up-to-date: /home/tyx/POC/poc_new/local/include/cybozu/atoi.hpp
+-- Up-to-date: /home/tyx/POC/poc_new/local/include/cybozu/socket.hpp
+-- Up-to-date: /home/tyx/POC/poc_new/local/include/cybozu/bit_operation.hpp
+-- Up-to-date: /home/tyx/POC/poc_new/local/include/cybozu/hash.hpp
+-- Up-to-date: /home/tyx/POC/poc_new/local/include/cybozu/sha2.hpp
+-- Up-to-date: /home/tyx/POC/poc_new/local/include/cybozu/random_generator.hpp
+-- Up-to-date: /home/tyx/POC/poc_new/local/include/cybozu/crypto.hpp
+-- Up-to-date: /home/tyx/POC/poc_new/local/include/cybozu/link_mpir.hpp
+-- Up-to-date: /home/tyx/POC/poc_new/local/include/cybozu/critical_section.hpp
+-- Up-to-date: /home/tyx/POC/poc_new/local/lib/cmake/mcl/mclTargets.cmake
+-- Installing: /home/tyx/POC/poc_new/local/lib/cmake/mcl/mclTargets-release.cmake
+checking build system type... x86_64-unknown-linux-gnu
+checking host system type... x86_64-unknown-linux-gnu
+checking for a BSD-compatible install... /usr/bin/install -c
+checking whether build environment is sane... yes
+checking for a thread-safe mkdir -p... /bin/mkdir -p
+checking for gawk... no
+checking for mawk... mawk
+checking whether make sets $(MAKE)... yes
+checking whether make supports nested variables... yes
+checking whether to enable maintainer-specific portions of Makefiles... no
+checking ABI=64
+checking compiler gcc -m64 ... yes
+checking compiler gcc -m64  -O2... yes
+checking compiler gcc -m64 -O2  -march=k8... yes
+checking compiler gcc -m64 -O2 -march=k8  -mtune=k8... yes
+checking for gcc... gcc
+checking whether the C compiler works... yes
+checking for C compiler default output file name... a.out
+checking for suffix of executables... 
+checking whether we are cross compiling... no
+checking for suffix of object files... o
+checking whether we are using the GNU C compiler... yes
+checking whether gcc accepts -g... yes
+checking for gcc option to accept ISO C89... none needed
+checking whether gcc understands -c and -o together... yes
+checking how to run the C preprocessor... gcc -E
+checking for grep that handles long lines and -e... /bin/grep
+checking for egrep... /bin/grep -E
+checking for ANSI C header files... yes
+checking for sys/types.h... yes
+checking for sys/stat.h... yes
+checking for stdlib.h... yes
+checking for string.h... yes
+checking for memory.h... yes
+checking for strings.h... yes
+checking for inttypes.h... yes
+checking for stdint.h... yes
+checking for unistd.h... yes
+checking minix/config.h usability... no
+checking minix/config.h presence... no
+checking for minix/config.h... no
+checking whether it is safe to define __EXTENSIONS__... yes
+checking for gcc... (cached) gcc
+checking whether we are using the GNU C compiler... (cached) yes
+checking whether gcc accepts -g... (cached) yes
+checking for gcc option to accept ISO C89... (cached) none needed
+checking whether gcc understands -c and -o together... (cached) yes
+checking for gcc option to accept ISO C99... none needed
+checking for gcc option to accept ISO Standard C... (cached) none needed
+checking how to run the C preprocessor... gcc -E
+checking build system compiler gcc... yes
+checking for build system preprocessor... gcc -E
+checking for build system executable suffix... 
+checking whether build system compiler is ANSI... yes
+checking for build system compiler math library... -lm
+Looking for a system-wide yasm...
+Checking yasm...
+checking for g++... g++
+checking whether we are using the GNU C++ compiler... yes
+checking whether g++ accepts -g... yes
+checking C++ compiler g++  -m64 -O2 -march=k8 -mtune=k8... yes
+using ABI="64"
+      CC="gcc"
+      CFLAGS="-m64 -O2 -march=k8 -mtune=k8"
+      CPPFLAGS=""
+      CXX="g++"
+      CXXFLAGS="-m64 -O2 -march=k8 -mtune=k8"
+      MPN_PATH=" x86_64 generic"
+checking for ar... ar
+checking for BSD- or MS-compatible name lister (nm)... /usr/bin/nm -B
+checking the name lister (/usr/bin/nm -B) interface... BSD nm
+checking how to print strings... printf
+checking for a sed that does not truncate output... /bin/sed
+checking for fgrep... /bin/grep -F
+checking for ld used by gcc... /usr/bin/ld
+checking if the linker (/usr/bin/ld) is GNU ld... yes
+checking whether ln -s works... yes
+checking the maximum length of command line arguments... 1572864
+checking how to convert x86_64-unknown-linux-gnu file names to x86_64-unknown-linux-gnu format... func_convert_file_noop
+checking how to convert x86_64-unknown-linux-gnu file names to toolchain format... func_convert_file_noop
+checking for /usr/bin/ld option to reload object files... -r
+checking for objdump... objdump
+checking how to recognize dependent libraries... pass_all
+checking for dlltool... no
+checking how to associate runtime and link libraries... printf %s\n
+checking for archiver @FILE support... @
+checking for strip... strip
+checking for ranlib... ranlib
+checking command to parse /usr/bin/nm -B output from gcc object... ok
+checking for sysroot... no
+checking for a working dd... /bin/dd
+checking how to truncate binary pipes... /bin/dd bs=4096 count=1
+checking for mt... mt
+checking if mt is a manifest tool... no
+checking for dlfcn.h... yes
+checking for objdir... .libs
+checking if gcc supports -fno-rtti -fno-exceptions... no
+checking for gcc option to produce PIC... -fPIC -DPIC
+checking if gcc PIC flag -fPIC -DPIC works... yes
+checking if gcc static flag -static works... yes
+checking if gcc supports -c -o file.o... yes
+checking if gcc supports -c -o file.o... (cached) yes
+checking whether the gcc linker (/usr/bin/ld -m elf_x86_64) supports shared libraries... yes
+checking whether -lc should be explicitly linked in... no
+checking dynamic linker characteristics... GNU/Linux ld.so
+checking how to hardcode library paths into programs... immediate
+checking whether stripping libraries is possible... yes
+checking if libtool supports shared libraries... yes
+checking whether to build shared libraries... yes
+checking whether to build static libraries... yes
+checking how to run the C++ preprocessor... g++ -E
+checking for ld used by g++... /usr/bin/ld -m elf_x86_64
+checking if the linker (/usr/bin/ld -m elf_x86_64) is GNU ld... yes
+checking whether the g++ linker (/usr/bin/ld -m elf_x86_64) supports shared libraries... yes
+checking for g++ option to produce PIC... -fPIC -DPIC
+checking if g++ PIC flag -fPIC -DPIC works... yes
+checking if g++ static flag -static works... yes
+checking if g++ supports -c -o file.o... yes
+checking if g++ supports -c -o file.o... (cached) yes
+checking whether the g++ linker (/usr/bin/ld -m elf_x86_64) supports shared libraries... yes
+checking dynamic linker characteristics... (cached) GNU/Linux ld.so
+checking how to hardcode library paths into programs... immediate
+checking for ANSI C header files... (cached) yes
+checking whether time.h and sys/time.h may both be included... yes
+checking fenv.h usability... yes
+checking fenv.h presence... yes
+checking for fenv.h... yes
+checking fcntl.h usability... yes
+checking fcntl.h presence... yes
+checking for fcntl.h... yes
+checking float.h usability... yes
+checking float.h presence... yes
+checking for float.h... yes
+checking langinfo.h usability... yes
+checking langinfo.h presence... yes
+checking for langinfo.h... yes
+checking locale.h usability... yes
+checking locale.h presence... yes
+checking for locale.h... yes
+checking nl_types.h usability... yes
+checking nl_types.h presence... yes
+checking for nl_types.h... yes
+checking sys/mman.h usability... yes
+checking sys/mman.h presence... yes
+checking for sys/mman.h... yes
+checking sys/param.h usability... yes
+checking sys/param.h presence... yes
+checking for sys/param.h... yes
+checking sys/processor.h usability... no
+checking sys/processor.h presence... no
+checking for sys/processor.h... no
+checking sys/pstat.h usability... no
+checking sys/pstat.h presence... no
+checking for sys/pstat.h... no
+checking sys/sysinfo.h usability... yes
+checking sys/sysinfo.h presence... yes
+checking for sys/sysinfo.h... yes
+checking sys/systemcfg.h usability... no
+checking sys/systemcfg.h presence... no
+checking for sys/systemcfg.h... no
+checking sys/time.h usability... yes
+checking sys/time.h presence... yes
+checking for sys/time.h... yes
+checking sys/times.h usability... yes
+checking sys/times.h presence... yes
+checking for sys/times.h... yes
+checking for sys/resource.h... yes
+checking for sys/sysctl.h... yes
+checking whether fgetc is declared... yes
+checking whether fscanf is declared... yes
+checking whether optarg is declared... yes
+checking whether ungetc is declared... yes
+checking whether vfprintf is declared... yes
+checking whether sys_errlist is declared... yes
+checking whether sys_nerr is declared... yes
+checking for intmax_t... yes
+checking for uintmax_t... yes
+checking for long double... yes
+checking for long long... yes
+checking for quad_t... yes
+checking for uint_least32_t... yes
+checking for preprocessor stringizing operator... yes
+checking for working volatile... yes
+checking whether <stdarg.h> exists and works... yes
+checking whether gcc __attribute__ ((const)) works... yes
+checking whether gcc __attribute__ ((malloc)) works... yes
+checking whether gcc __attribute__ ((mode (XX))) works... yes
+checking whether gcc __attribute__ ((noreturn)) works... yes
+checking for inline... inline
+checking for cos in -lm... yes
+checking for working alloca.h... yes
+checking for alloca (via gmp-impl.h)... yes
+checking how to allocate temporary memory... alloca
+checking whether byte ordering is bigendian... no
+checking format of `double' floating point... IEEE little endian
+checking for alarm... yes
+checking for attr_get... no
+checking for clock... yes
+checking for clock_gettime... yes
+checking for cputime... no
+checking for getpagesize... yes
+checking for getrusage... yes
+checking for gettimeofday... yes
+checking for getsysinfo... no
+checking for localeconv... yes
+checking for mmap... yes
+checking for nl_langinfo... yes
+checking for obstack_vprintf... yes
+checking for popen... yes
+checking for processor_info... no
+checking for pstat_getprocessor... no
+checking for raise... yes
+checking for read_real_time... no
+checking for syssgi... no
+checking for strerror... yes
+checking for strnlen... yes
+checking for strtol... yes
+checking for strtoul... yes
+checking for sysconf... yes
+checking for sysctl... yes
+checking for sysctlbyname... no
+checking for times... yes
+checking for mprotect... yes
+checking for vsnprintf... yes
+checking whether vsnprintf works... yes
+checking whether sscanf needs writable input... no
+checking for struct pst_processor.psp_iticksperclktick... no
+checking sstream usability... yes
+checking sstream presence... yes
+checking for sstream... yes
+checking for std::locale... yes
+checking for suitable m4... m4
+checking if m4wrap produces spurious output... no
+checking how to switch to text section... .text
+checking how to switch to data section... .data
+checking for assembler label suffix... :
+checking for assembler global directive... .globl
+checking for assembler global directive attribute... 
+checking if globals are prefixed by underscore... no
+checking how to switch to read-only data section... 	.section	.rodata
+checking for assembler .type directive... .type	$1,@$2
+checking for assembler .size directive... .size	$1,$2
+checking for assembler local label prefix... .L
+checking for assembler byte directive... .byte
+checking how to define a 32-bit word... .long
+checking if .align assembly directive is logarithmic... no
+checking if the .align directive accepts an 0x90 fill in .text... yes
+checking size of unsigned short... 2
+checking size of unsigned... 4
+checking size of unsigned long... 8
+checking size of uintmax_t... 8
+checking size of mp_limb_t... 8
+creating config.m4
+checking that generated files are newer than configure... done
+configure: creating ./config.status
+config.status: creating longlong.h
+config.status: creating Makefile
+config.status: creating mpf/Makefile
+config.status: creating mpn/Makefile
+config.status: creating fft/Makefile
+config.status: creating mpq/Makefile
+config.status: creating mpz/Makefile
+config.status: creating printf/Makefile
+config.status: creating scanf/Makefile
+config.status: creating cxx/Makefile
+config.status: creating tests/Makefile
+config.status: creating tests/devel/Makefile
+config.status: creating tests/mpf/Makefile
+config.status: creating tests/mpn/Makefile
+config.status: creating tests/fft/Makefile
+config.status: creating tests/mpq/Makefile
+config.status: creating tests/mpz/Makefile
+config.status: creating tests/rand/Makefile
+config.status: creating tests/misc/Makefile
+config.status: creating tests/cxx/Makefile
+config.status: creating doc/Makefile
+config.status: creating tune/Makefile
+config.status: creating mpir.h
+config.status: creating config.h
+config.status: config.h is unchanged
+config.status: linking mpn/generic/add.c to mpn/add.c
+config.status: linking mpn/generic/add_1.c to mpn/add_1.c
+config.status: linking mpn/generic/add_n.c to mpn/add_n.c
+config.status: linking mpn/generic/sub.c to mpn/sub.c
+config.status: linking mpn/generic/sub_1.c to mpn/sub_1.c
+config.status: linking mpn/generic/sub_n.c to mpn/sub_n.c
+config.status: linking mpn/generic/mul_1.c to mpn/mul_1.c
+config.status: linking mpn/generic/addmul_1.c to mpn/addmul_1.c
+config.status: linking mpn/generic/submul_1.c to mpn/submul_1.c
+config.status: linking mpn/generic/lshift.c to mpn/lshift.c
+config.status: linking mpn/generic/rshift.c to mpn/rshift.c
+config.status: linking mpn/generic/addadd_n.c to mpn/addadd_n.c
+config.status: linking mpn/generic/addsub_n.c to mpn/addsub_n.c
+config.status: linking mpn/generic/subadd_n.c to mpn/subadd_n.c
+config.status: linking mpn/generic/comb_tables.c to mpn/comb_tables.c
+config.status: linking mpn/generic/divexact_1.c to mpn/divexact_1.c
+config.status: linking mpn/x86_64/divexact_by3c.as to mpn/divexact_by3c.as
+config.status: linking mpn/generic/divexact_byff.c to mpn/divexact_byff.c
+config.status: linking mpn/x86_64/divexact_byfobm1.as to mpn/divexact_byfobm1.as
+config.status: linking mpn/generic/divisible_p.c to mpn/divisible_p.c
+config.status: linking mpn/generic/divrem.c to mpn/divrem.c
+config.status: linking mpn/generic/divrem_1.c to mpn/divrem_1.c
+config.status: linking mpn/x86_64/divrem_2.as to mpn/divrem_2.as
+config.status: linking mpn/x86_64/divrem_euclidean_qr_1.as to mpn/divrem_euclidean_qr_1.as
+config.status: linking mpn/x86_64/divrem_euclidean_qr_2.as to mpn/divrem_euclidean_qr_2.as
+config.status: linking mpn/generic/divrem_euclidean_r_1.c to mpn/divrem_euclidean_r_1.c
+config.status: linking mpn/generic/divrem_hensel_qr_1.c to mpn/divrem_hensel_qr_1.c
+config.status: linking mpn/generic/divrem_hensel_qr_1_1.c to mpn/divrem_hensel_qr_1_1.c
+config.status: linking mpn/generic/divrem_hensel_qr_1_2.c to mpn/divrem_hensel_qr_1_2.c
+config.status: linking mpn/generic/divrem_hensel_r_1.c to mpn/divrem_hensel_r_1.c
+config.status: linking mpn/generic/divrem_hensel_rsh_qr_1.c to mpn/divrem_hensel_rsh_qr_1.c
+config.status: linking mpn/generic/rsh_divrem_hensel_qr_1.c to mpn/rsh_divrem_hensel_qr_1.c
+config.status: linking mpn/generic/rsh_divrem_hensel_qr_1_1.c to mpn/rsh_divrem_hensel_qr_1_1.c
+config.status: linking mpn/generic/rsh_divrem_hensel_qr_1_2.c to mpn/rsh_divrem_hensel_qr_1_2.c
+config.status: linking mpn/x86_64/add_err1_n.asm to mpn/add_err1_n.asm
+config.status: linking mpn/x86_64/add_err2_n.asm to mpn/add_err2_n.asm
+config.status: linking mpn/x86_64/sub_err1_n.asm to mpn/sub_err1_n.asm
+config.status: linking mpn/x86_64/sub_err2_n.asm to mpn/sub_err2_n.asm
+config.status: linking mpn/generic/fib2_ui.c to mpn/fib2_ui.c
+config.status: linking mpn/generic/mod_1.c to mpn/mod_1.c
+config.status: linking mpn/generic/mod_34lsub1.c to mpn/mod_34lsub1.c
+config.status: linking mpn/x86_64/modexact_1c_odd.as to mpn/modexact_1c_odd.as
+config.status: linking mpn/generic/preinv_mod_1.c to mpn/preinv_mod_1.c
+config.status: linking mpn/generic/dump.c to mpn/dump.c
+config.status: linking mpn/generic/gcd_subdiv_step.c to mpn/gcd_subdiv_step.c
+config.status: linking mpn/generic/gcdext_lehmer.c to mpn/gcdext_lehmer.c
+config.status: linking mpn/generic/gcdext_1.c to mpn/gcdext_1.c
+config.status: linking mpn/generic/hgcd.c to mpn/hgcd.c
+config.status: linking mpn/generic/matrix22_mul.c to mpn/matrix22_mul.c
+config.status: linking mpn/generic/hgcd2.c to mpn/hgcd2.c
+config.status: linking mpn/generic/hgcd2_jacobi.c to mpn/hgcd2_jacobi.c
+config.status: linking mpn/generic/hgcd_appr.c to mpn/hgcd_appr.c
+config.status: linking mpn/generic/hgcd_jacobi.c to mpn/hgcd_jacobi.c
+config.status: linking mpn/generic/hgcd_matrix.c to mpn/hgcd_matrix.c
+config.status: linking mpn/generic/hgcd_reduce.c to mpn/hgcd_reduce.c
+config.status: linking mpn/generic/hgcd_step.c to mpn/hgcd_step.c
+config.status: linking mpn/generic/matrix22_mul1_inverse_vector.c to mpn/matrix22_mul1_inverse_vector.c
+config.status: linking mpn/generic/mod_1_1.c to mpn/mod_1_1.c
+config.status: linking mpn/generic/mod_1_2.c to mpn/mod_1_2.c
+config.status: linking mpn/generic/mod_1_3.c to mpn/mod_1_3.c
+config.status: linking mpn/generic/tdiv_q.c to mpn/tdiv_q.c
+config.status: linking mpn/generic/mp_bases.c to mpn/mp_bases.c
+config.status: linking mpn/generic/fib_table.c to mpn/fib_table.c
+config.status: linking mpn/x86_64/mulmid_basecase.asm to mpn/mulmid_basecase.asm
+config.status: linking mpn/generic/mulmid.c to mpn/mulmid.c
+config.status: linking mpn/generic/mulmid_n.c to mpn/mulmid_n.c
+config.status: linking mpn/generic/toom42_mulmid.c to mpn/toom42_mulmid.c
+config.status: linking mpn/generic/mulmod_bexpp1.c to mpn/mulmod_bexpp1.c
+config.status: linking mpn/generic/mulmod_2expm1.c to mpn/mulmod_2expm1.c
+config.status: linking mpn/generic/mulmod_2expp1_basecase.c to mpn/mulmod_2expp1_basecase.c
+config.status: linking mpn/generic/mul_fft.c to mpn/mul_fft.c
+config.status: linking mpn/generic/mul.c to mpn/mul.c
+config.status: linking mpn/generic/mul_n.c to mpn/mul_n.c
+config.status: linking mpn/generic/mul_basecase.c to mpn/mul_basecase.c
+config.status: linking mpn/x86_64/sqr_basecase.asm to mpn/sqr_basecase.asm
+config.status: linking mpn/generic/random.c to mpn/random.c
+config.status: linking mpn/generic/random2.c to mpn/random2.c
+config.status: linking mpn/generic/pow_1.c to mpn/pow_1.c
+config.status: linking mpn/generic/powlo.c to mpn/powlo.c
+config.status: linking mpn/generic/powm.c to mpn/powm.c
+config.status: linking mpn/generic/binvert.c to mpn/binvert.c
+config.status: linking mpn/generic/urandomb.c to mpn/urandomb.c
+config.status: linking mpn/generic/urandomm.c to mpn/urandomm.c
+config.status: linking mpn/generic/randomb.c to mpn/randomb.c
+config.status: linking mpn/generic/rrandom.c to mpn/rrandom.c
+config.status: linking mpn/generic/invert.c to mpn/invert.c
+config.status: linking mpn/generic/rootrem.c to mpn/rootrem.c
+config.status: linking mpn/generic/sizeinbase.c to mpn/sizeinbase.c
+config.status: linking mpn/generic/sqrtrem.c to mpn/sqrtrem.c
+config.status: linking mpn/generic/get_str.c to mpn/get_str.c
+config.status: linking mpn/generic/set_str.c to mpn/set_str.c
+config.status: linking mpn/generic/scan0.c to mpn/scan0.c
+config.status: linking mpn/generic/scan1.c to mpn/scan1.c
+config.status: linking mpn/generic/popcount.c to mpn/popcount.c
+config.status: linking mpn/generic/hamdist.c to mpn/hamdist.c
+config.status: linking mpn/generic/cmp.c to mpn/cmp.c
+config.status: linking mpn/generic/perfect_square_p.c to mpn/perfect_square_p.c
+config.status: linking mpn/generic/bdivmod.c to mpn/bdivmod.c
+config.status: linking mpn/generic/gcd.c to mpn/gcd.c
+config.status: linking mpn/generic/gcd_1.c to mpn/gcd_1.c
+config.status: linking mpn/generic/gcdext.c to mpn/gcdext.c
+config.status: linking mpn/generic/tdiv_qr.c to mpn/tdiv_qr.c
+config.status: linking mpn/generic/jacobi_base.c to mpn/jacobi_base.c
+config.status: linking mpn/generic/jacobi.c to mpn/jacobi.c
+config.status: linking mpn/generic/jacobi_2.c to mpn/jacobi_2.c
+config.status: linking mpn/generic/get_d.c to mpn/get_d.c
+config.status: linking mpn/generic/mullow_n.c to mpn/mullow_n.c
+config.status: linking mpn/generic/mulhigh_n.c to mpn/mulhigh_n.c
+config.status: linking mpn/x86_64/mullow_n_basecase.asm to mpn/mullow_n_basecase.asm
+config.status: linking mpn/generic/mullow_basecase.c to mpn/mullow_basecase.c
+config.status: linking mpn/generic/redc_1.c to mpn/redc_1.c
+config.status: linking mpn/generic/redc_2.c to mpn/redc_2.c
+config.status: linking mpn/generic/redc_n.c to mpn/redc_n.c
+config.status: linking mpn/generic/sb_divappr_q.c to mpn/sb_divappr_q.c
+config.status: linking mpn/generic/toom3_mul.c to mpn/toom3_mul.c
+config.status: linking mpn/generic/toom3_mul_n.c to mpn/toom3_mul_n.c
+config.status: linking mpn/generic/toom4_mul.c to mpn/toom4_mul.c
+config.status: linking mpn/generic/toom4_mul_n.c to mpn/toom4_mul_n.c
+config.status: linking mpn/generic/dc_div_q.c to mpn/dc_div_q.c
+config.status: linking mpn/generic/dc_divappr_q.c to mpn/dc_divappr_q.c
+config.status: linking mpn/generic/sb_div_q.c to mpn/sb_div_q.c
+config.status: linking mpn/generic/sb_div_qr.c to mpn/sb_div_qr.c
+config.status: linking mpn/generic/dc_div_qr.c to mpn/dc_div_qr.c
+config.status: linking mpn/generic/dc_div_qr_n.c to mpn/dc_div_qr_n.c
+config.status: linking mpn/generic/inv_divappr_q_n.c to mpn/inv_divappr_q_n.c
+config.status: linking mpn/generic/inv_divappr_q.c to mpn/inv_divappr_q.c
+config.status: linking mpn/generic/inv_div_q.c to mpn/inv_div_q.c
+config.status: linking mpn/generic/inv_div_qr.c to mpn/inv_div_qr.c
+config.status: linking mpn/generic/inv_div_qr_n.c to mpn/inv_div_qr_n.c
+config.status: linking mpn/generic/rootrem_basecase.c to mpn/rootrem_basecase.c
+config.status: linking mpn/generic/toom_eval_dgr3_pm1.c to mpn/toom_eval_dgr3_pm1.c
+config.status: linking mpn/generic/toom_eval_dgr3_pm2.c to mpn/toom_eval_dgr3_pm2.c
+config.status: linking mpn/generic/toom_eval_pm1.c to mpn/toom_eval_pm1.c
+config.status: linking mpn/generic/toom_eval_pm2.c to mpn/toom_eval_pm2.c
+config.status: linking mpn/generic/toom_eval_pm2exp.c to mpn/toom_eval_pm2exp.c
+config.status: linking mpn/generic/toom_eval_pm2rexp.c to mpn/toom_eval_pm2rexp.c
+config.status: linking mpn/generic/toom_interpolate_16pts.c to mpn/toom_interpolate_16pts.c
+config.status: linking mpn/generic/toom8_sqr_n.c to mpn/toom8_sqr_n.c
+config.status: linking mpn/generic/toom8h_mul.c to mpn/toom8h_mul.c
+config.status: linking mpn/generic/toom_couple_handling.c to mpn/toom_couple_handling.c
+config.status: linking mpn/generic/sb_bdiv_q.c to mpn/sb_bdiv_q.c
+config.status: linking mpn/generic/sb_bdiv_qr.c to mpn/sb_bdiv_qr.c
+config.status: linking mpn/generic/dc_bdiv_q_n.c to mpn/dc_bdiv_q_n.c
+config.status: linking mpn/generic/dc_bdiv_q.c to mpn/dc_bdiv_q.c
+config.status: linking mpn/generic/dc_bdiv_qr.c to mpn/dc_bdiv_qr.c
+config.status: linking mpn/generic/dc_bdiv_qr_n.c to mpn/dc_bdiv_qr_n.c
+config.status: linking mpn/generic/divexact.c to mpn/divexact.c
+config.status: linking mpn/generic/zero.c to mpn/zero.c
+config.status: linking mpn/generic/zero_p.c to mpn/zero_p.c
+config.status: linking mpn/generic/copyi.c to mpn/copyi.c
+config.status: linking mpn/generic/copyd.c to mpn/copyd.c
+config.status: linking mpn/generic/com_n.c to mpn/com_n.c
+config.status: linking mpn/generic/neg_n.c to mpn/neg_n.c
+config.status: linking mpn/generic/and_n.c to mpn/and_n.c
+config.status: linking mpn/generic/andn_n.c to mpn/andn_n.c
+config.status: linking mpn/generic/nand_n.c to mpn/nand_n.c
+config.status: linking mpn/generic/ior_n.c to mpn/ior_n.c
+config.status: linking mpn/generic/iorn_n.c to mpn/iorn_n.c
+config.status: linking mpn/generic/nior_n.c to mpn/nior_n.c
+config.status: linking mpn/generic/xor_n.c to mpn/xor_n.c
+config.status: linking mpn/generic/xnor_n.c to mpn/xnor_n.c
+config.status: linking mpn/generic/sumdiff_n.c to mpn/sumdiff_n.c
+config.status: linking mpn/generic/nsumdiff_n.c to mpn/nsumdiff_n.c
+config.status: linking mpn/x86_64/gmp-mparam.h to gmp-mparam.h
+config.status: linking yasm_mac.inc.nofat to yasm_mac.inc
+config.status: executing libtool commands
+libtoolize: Consider adding 'AC_CONFIG_MACRO_DIRS([m4])' to configure.ac,
+libtoolize: and rerunning libtoolize and aclocal.
+libtoolize: Consider adding '-I m4' to ACLOCAL_AMFLAGS in Makefile.am.
+make  all-recursive
+make[1]: Entering directory '/home/tyx/POC/poc_new/mpir'
+Making all in tests
+make[2]: Entering directory '/home/tyx/POC/poc_new/mpir/tests'
+Making all in .
+make[3]: Entering directory '/home/tyx/POC/poc_new/mpir/tests'
+make[3]: Nothing to be done for 'all-am'.
+make[3]: Leaving directory '/home/tyx/POC/poc_new/mpir/tests'
+Making all in devel
+make[3]: Entering directory '/home/tyx/POC/poc_new/mpir/tests/devel'
+make[3]: Nothing to be done for 'all'.
+make[3]: Leaving directory '/home/tyx/POC/poc_new/mpir/tests/devel'
+Making all in mpn
+make[3]: Entering directory '/home/tyx/POC/poc_new/mpir/tests/mpn'
+make[3]: Nothing to be done for 'all'.
+make[3]: Leaving directory '/home/tyx/POC/poc_new/mpir/tests/mpn'
+Making all in fft
+make[3]: Entering directory '/home/tyx/POC/poc_new/mpir/tests/fft'
+make[3]: Nothing to be done for 'all'.
+make[3]: Leaving directory '/home/tyx/POC/poc_new/mpir/tests/fft'
+Making all in mpz
+make[3]: Entering directory '/home/tyx/POC/poc_new/mpir/tests/mpz'
+make[3]: Nothing to be done for 'all'.
+make[3]: Leaving directory '/home/tyx/POC/poc_new/mpir/tests/mpz'
+Making all in mpq
+make[3]: Entering directory '/home/tyx/POC/poc_new/mpir/tests/mpq'
+make[3]: Nothing to be done for 'all'.
+make[3]: Leaving directory '/home/tyx/POC/poc_new/mpir/tests/mpq'
+Making all in mpf
+make[3]: Entering directory '/home/tyx/POC/poc_new/mpir/tests/mpf'
+make[3]: Nothing to be done for 'all'.
+make[3]: Leaving directory '/home/tyx/POC/poc_new/mpir/tests/mpf'
+Making all in rand
+make[3]: Entering directory '/home/tyx/POC/poc_new/mpir/tests/rand'
+make[3]: Nothing to be done for 'all'.
+make[3]: Leaving directory '/home/tyx/POC/poc_new/mpir/tests/rand'
+Making all in misc
+make[3]: Entering directory '/home/tyx/POC/poc_new/mpir/tests/misc'
+make[3]: Nothing to be done for 'all'.
+make[3]: Leaving directory '/home/tyx/POC/poc_new/mpir/tests/misc'
+Making all in cxx
+make[3]: Entering directory '/home/tyx/POC/poc_new/mpir/tests/cxx'
+make[3]: Nothing to be done for 'all'.
+make[3]: Leaving directory '/home/tyx/POC/poc_new/mpir/tests/cxx'
+make[2]: Leaving directory '/home/tyx/POC/poc_new/mpir/tests'
+Making all in mpn
+make[2]: Entering directory '/home/tyx/POC/poc_new/mpir/mpn'
+make[2]: Nothing to be done for 'all'.
+make[2]: Leaving directory '/home/tyx/POC/poc_new/mpir/mpn'
+Making all in fft
+make[2]: Entering directory '/home/tyx/POC/poc_new/mpir/fft'
+make[2]: Nothing to be done for 'all'.
+make[2]: Leaving directory '/home/tyx/POC/poc_new/mpir/fft'
+Making all in mpz
+make[2]: Entering directory '/home/tyx/POC/poc_new/mpir/mpz'
+make[2]: Nothing to be done for 'all'.
+make[2]: Leaving directory '/home/tyx/POC/poc_new/mpir/mpz'
+Making all in mpq
+make[2]: Entering directory '/home/tyx/POC/poc_new/mpir/mpq'
+make[2]: Nothing to be done for 'all'.
+make[2]: Leaving directory '/home/tyx/POC/poc_new/mpir/mpq'
+Making all in mpf
+make[2]: Entering directory '/home/tyx/POC/poc_new/mpir/mpf'
+make[2]: Nothing to be done for 'all'.
+make[2]: Leaving directory '/home/tyx/POC/poc_new/mpir/mpf'
+Making all in printf
+make[2]: Entering directory '/home/tyx/POC/poc_new/mpir/printf'
+make[2]: Nothing to be done for 'all'.
+make[2]: Leaving directory '/home/tyx/POC/poc_new/mpir/printf'
+Making all in scanf
+make[2]: Entering directory '/home/tyx/POC/poc_new/mpir/scanf'
+make[2]: Nothing to be done for 'all'.
+make[2]: Leaving directory '/home/tyx/POC/poc_new/mpir/scanf'
+Making all in cxx
+make[2]: Entering directory '/home/tyx/POC/poc_new/mpir/cxx'
+make[2]: Nothing to be done for 'all'.
+make[2]: Leaving directory '/home/tyx/POC/poc_new/mpir/cxx'
+Making all in tune
+make[2]: Entering directory '/home/tyx/POC/poc_new/mpir/tune'
+make[2]: Nothing to be done for 'all'.
+make[2]: Leaving directory '/home/tyx/POC/poc_new/mpir/tune'
+Making all in doc
+make[2]: Entering directory '/home/tyx/POC/poc_new/mpir/doc'
+make[2]: Nothing to be done for 'all'.
+make[2]: Leaving directory '/home/tyx/POC/poc_new/mpir/doc'
+make[2]: Entering directory '/home/tyx/POC/poc_new/mpir'
+make[2]: Leaving directory '/home/tyx/POC/poc_new/mpir'
+make[1]: Leaving directory '/home/tyx/POC/poc_new/mpir'
+make  install-recursive
+make[1]: Entering directory '/home/tyx/POC/poc_new/mpir'
+Making install in tests
+make[2]: Entering directory '/home/tyx/POC/poc_new/mpir/tests'
+Making install in .
+make[3]: Entering directory '/home/tyx/POC/poc_new/mpir/tests'
+make[4]: Entering directory '/home/tyx/POC/poc_new/mpir/tests'
+make[4]: Nothing to be done for 'install-exec-am'.
+make[4]: Nothing to be done for 'install-data-am'.
+make[4]: Leaving directory '/home/tyx/POC/poc_new/mpir/tests'
+make[3]: Leaving directory '/home/tyx/POC/poc_new/mpir/tests'
+Making install in devel
+make[3]: Entering directory '/home/tyx/POC/poc_new/mpir/tests/devel'
+make[4]: Entering directory '/home/tyx/POC/poc_new/mpir/tests/devel'
+make[4]: Nothing to be done for 'install-exec-am'.
+make[4]: Nothing to be done for 'install-data-am'.
+make[4]: Leaving directory '/home/tyx/POC/poc_new/mpir/tests/devel'
+make[3]: Leaving directory '/home/tyx/POC/poc_new/mpir/tests/devel'
+Making install in mpn
+make[3]: Entering directory '/home/tyx/POC/poc_new/mpir/tests/mpn'
+make[4]: Entering directory '/home/tyx/POC/poc_new/mpir/tests/mpn'
+make[4]: Nothing to be done for 'install-exec-am'.
+make[4]: Nothing to be done for 'install-data-am'.
+make[4]: Leaving directory '/home/tyx/POC/poc_new/mpir/tests/mpn'
+make[3]: Leaving directory '/home/tyx/POC/poc_new/mpir/tests/mpn'
+Making install in fft
+make[3]: Entering directory '/home/tyx/POC/poc_new/mpir/tests/fft'
+make[4]: Entering directory '/home/tyx/POC/poc_new/mpir/tests/fft'
+make[4]: Nothing to be done for 'install-exec-am'.
+make[4]: Nothing to be done for 'install-data-am'.
+make[4]: Leaving directory '/home/tyx/POC/poc_new/mpir/tests/fft'
+make[3]: Leaving directory '/home/tyx/POC/poc_new/mpir/tests/fft'
+Making install in mpz
+make[3]: Entering directory '/home/tyx/POC/poc_new/mpir/tests/mpz'
+make[4]: Entering directory '/home/tyx/POC/poc_new/mpir/tests/mpz'
+make[4]: Nothing to be done for 'install-exec-am'.
+make[4]: Nothing to be done for 'install-data-am'.
+make[4]: Leaving directory '/home/tyx/POC/poc_new/mpir/tests/mpz'
+make[3]: Leaving directory '/home/tyx/POC/poc_new/mpir/tests/mpz'
+Making install in mpq
+make[3]: Entering directory '/home/tyx/POC/poc_new/mpir/tests/mpq'
+make[4]: Entering directory '/home/tyx/POC/poc_new/mpir/tests/mpq'
+make[4]: Nothing to be done for 'install-exec-am'.
+make[4]: Nothing to be done for 'install-data-am'.
+make[4]: Leaving directory '/home/tyx/POC/poc_new/mpir/tests/mpq'
+make[3]: Leaving directory '/home/tyx/POC/poc_new/mpir/tests/mpq'
+Making install in mpf
+make[3]: Entering directory '/home/tyx/POC/poc_new/mpir/tests/mpf'
+make[4]: Entering directory '/home/tyx/POC/poc_new/mpir/tests/mpf'
+make[4]: Nothing to be done for 'install-exec-am'.
+make[4]: Nothing to be done for 'install-data-am'.
+make[4]: Leaving directory '/home/tyx/POC/poc_new/mpir/tests/mpf'
+make[3]: Leaving directory '/home/tyx/POC/poc_new/mpir/tests/mpf'
+Making install in rand
+make[3]: Entering directory '/home/tyx/POC/poc_new/mpir/tests/rand'
+make[4]: Entering directory '/home/tyx/POC/poc_new/mpir/tests/rand'
+make[4]: Nothing to be done for 'install-exec-am'.
+make[4]: Nothing to be done for 'install-data-am'.
+make[4]: Leaving directory '/home/tyx/POC/poc_new/mpir/tests/rand'
+make[3]: Leaving directory '/home/tyx/POC/poc_new/mpir/tests/rand'
+Making install in misc
+make[3]: Entering directory '/home/tyx/POC/poc_new/mpir/tests/misc'
+make[4]: Entering directory '/home/tyx/POC/poc_new/mpir/tests/misc'
+make[4]: Nothing to be done for 'install-exec-am'.
+make[4]: Nothing to be done for 'install-data-am'.
+make[4]: Leaving directory '/home/tyx/POC/poc_new/mpir/tests/misc'
+make[3]: Leaving directory '/home/tyx/POC/poc_new/mpir/tests/misc'
+Making install in cxx
+make[3]: Entering directory '/home/tyx/POC/poc_new/mpir/tests/cxx'
+make[4]: Entering directory '/home/tyx/POC/poc_new/mpir/tests/cxx'
+make[4]: Nothing to be done for 'install-exec-am'.
+make[4]: Nothing to be done for 'install-data-am'.
+make[4]: Leaving directory '/home/tyx/POC/poc_new/mpir/tests/cxx'
+make[3]: Leaving directory '/home/tyx/POC/poc_new/mpir/tests/cxx'
+make[2]: Leaving directory '/home/tyx/POC/poc_new/mpir/tests'
+Making install in mpn
+make[2]: Entering directory '/home/tyx/POC/poc_new/mpir/mpn'
+make[3]: Entering directory '/home/tyx/POC/poc_new/mpir/mpn'
+make[3]: Nothing to be done for 'install-exec-am'.
+make[3]: Nothing to be done for 'install-data-am'.
+make[3]: Leaving directory '/home/tyx/POC/poc_new/mpir/mpn'
+make[2]: Leaving directory '/home/tyx/POC/poc_new/mpir/mpn'
+Making install in fft
+make[2]: Entering directory '/home/tyx/POC/poc_new/mpir/fft'
+make[3]: Entering directory '/home/tyx/POC/poc_new/mpir/fft'
+make[3]: Nothing to be done for 'install-exec-am'.
+make[3]: Nothing to be done for 'install-data-am'.
+make[3]: Leaving directory '/home/tyx/POC/poc_new/mpir/fft'
+make[2]: Leaving directory '/home/tyx/POC/poc_new/mpir/fft'
+Making install in mpz
+make[2]: Entering directory '/home/tyx/POC/poc_new/mpir/mpz'
+make[3]: Entering directory '/home/tyx/POC/poc_new/mpir/mpz'
+make[3]: Nothing to be done for 'install-exec-am'.
+make[3]: Nothing to be done for 'install-data-am'.
+make[3]: Leaving directory '/home/tyx/POC/poc_new/mpir/mpz'
+make[2]: Leaving directory '/home/tyx/POC/poc_new/mpir/mpz'
+Making install in mpq
+make[2]: Entering directory '/home/tyx/POC/poc_new/mpir/mpq'
+make[3]: Entering directory '/home/tyx/POC/poc_new/mpir/mpq'
+make[3]: Nothing to be done for 'install-exec-am'.
+make[3]: Nothing to be done for 'install-data-am'.
+make[3]: Leaving directory '/home/tyx/POC/poc_new/mpir/mpq'
+make[2]: Leaving directory '/home/tyx/POC/poc_new/mpir/mpq'
+Making install in mpf
+make[2]: Entering directory '/home/tyx/POC/poc_new/mpir/mpf'
+make[3]: Entering directory '/home/tyx/POC/poc_new/mpir/mpf'
+make[3]: Nothing to be done for 'install-exec-am'.
+make[3]: Nothing to be done for 'install-data-am'.
+make[3]: Leaving directory '/home/tyx/POC/poc_new/mpir/mpf'
+make[2]: Leaving directory '/home/tyx/POC/poc_new/mpir/mpf'
+Making install in printf
+make[2]: Entering directory '/home/tyx/POC/poc_new/mpir/printf'
+make[3]: Entering directory '/home/tyx/POC/poc_new/mpir/printf'
+make[3]: Nothing to be done for 'install-exec-am'.
+make[3]: Nothing to be done for 'install-data-am'.
+make[3]: Leaving directory '/home/tyx/POC/poc_new/mpir/printf'
+make[2]: Leaving directory '/home/tyx/POC/poc_new/mpir/printf'
+Making install in scanf
+make[2]: Entering directory '/home/tyx/POC/poc_new/mpir/scanf'
+make[3]: Entering directory '/home/tyx/POC/poc_new/mpir/scanf'
+make[3]: Nothing to be done for 'install-exec-am'.
+make[3]: Nothing to be done for 'install-data-am'.
+make[3]: Leaving directory '/home/tyx/POC/poc_new/mpir/scanf'
+make[2]: Leaving directory '/home/tyx/POC/poc_new/mpir/scanf'
+Making install in cxx
+make[2]: Entering directory '/home/tyx/POC/poc_new/mpir/cxx'
+make[3]: Entering directory '/home/tyx/POC/poc_new/mpir/cxx'
+make[3]: Nothing to be done for 'install-exec-am'.
+make[3]: Nothing to be done for 'install-data-am'.
+make[3]: Leaving directory '/home/tyx/POC/poc_new/mpir/cxx'
+make[2]: Leaving directory '/home/tyx/POC/poc_new/mpir/cxx'
+Making install in tune
+make[2]: Entering directory '/home/tyx/POC/poc_new/mpir/tune'
+make[3]: Entering directory '/home/tyx/POC/poc_new/mpir/tune'
+make[3]: Nothing to be done for 'install-exec-am'.
+make[3]: Nothing to be done for 'install-data-am'.
+make[3]: Leaving directory '/home/tyx/POC/poc_new/mpir/tune'
+make[2]: Leaving directory '/home/tyx/POC/poc_new/mpir/tune'
+Making install in doc
+make[2]: Entering directory '/home/tyx/POC/poc_new/mpir/doc'
+make[3]: Entering directory '/home/tyx/POC/poc_new/mpir/doc'
+make[3]: Nothing to be done for 'install-exec-am'.
+ /bin/mkdir -p '/home/tyx/POC/poc_new/local/share/info'
+ /usr/bin/install -c -m 644 ./mpir.info ./mpir.info-1 ./mpir.info-2 '/home/tyx/POC/poc_new/local/share/info'
+ install-info --info-dir='/home/tyx/POC/poc_new/local/share/info' '/home/tyx/POC/poc_new/local/share/info/mpir.info'
+make[3]: Leaving directory '/home/tyx/POC/poc_new/mpir/doc'
+make[2]: Leaving directory '/home/tyx/POC/poc_new/mpir/doc'
+make[2]: Entering directory '/home/tyx/POC/poc_new/mpir'
+make[3]: Entering directory '/home/tyx/POC/poc_new/mpir'
+ /bin/mkdir -p '/home/tyx/POC/poc_new/local/lib'
+ /bin/bash ./libtool   --mode=install /usr/bin/install -c   libmpir.la libmpirxx.la '/home/tyx/POC/poc_new/local/lib'
+libtool: install: /usr/bin/install -c .libs/libmpir.so.23.0.3 /home/tyx/POC/poc_new/local/lib/libmpir.so.23.0.3
+libtool: install: (cd /home/tyx/POC/poc_new/local/lib && { ln -s -f libmpir.so.23.0.3 libmpir.so.23 || { rm -f libmpir.so.23 && ln -s libmpir.so.23.0.3 libmpir.so.23; }; })
+libtool: install: (cd /home/tyx/POC/poc_new/local/lib && { ln -s -f libmpir.so.23.0.3 libmpir.so || { rm -f libmpir.so && ln -s libmpir.so.23.0.3 libmpir.so; }; })
+libtool: install: /usr/bin/install -c .libs/libmpir.lai /home/tyx/POC/poc_new/local/lib/libmpir.la
+libtool: install: (cd /POC/poc_new/mpir; /bin/bash "/POC/poc_new/mpir/libtool"  --tag CXX --mode=relink g++ -m64 -O2 -march=k8 -mtune=k8 -Wl,-z,noexecstack -version-info 12:3:4 -o libmpirxx.la -rpath /POC/poc_new/local/lib cxx/dummy.lo cxx/isfuns.lo cxx/ismpf.lo cxx/ismpq.lo cxx/ismpz.lo cxx/ismpznw.lo cxx/osdoprnti.lo cxx/osfuns.lo cxx/osmpf.lo cxx/osmpq.lo cxx/osmpz.lo libmpir.la -inst-prefix-dir /home/tyx)
+Makefile:817: recipe for target 'install-libLTLIBRARIES' failed
+make[3]: Leaving directory '/home/tyx/POC/poc_new/mpir'
+Makefile:1255: recipe for target 'install-am' failed
+make[2]: Leaving directory '/home/tyx/POC/poc_new/mpir'
+Makefile:952: recipe for target 'install-recursive' failed
+make[1]: Leaving directory '/home/tyx/POC/poc_new/mpir'
+Makefile:1249: recipe for target 'install' failed
+ar -crs libsimpleot.a Keccak-simple.o randombytes.o cpucycles.o network.o ot_sender.o ot_receiver.o sc25519_random.o sc25519_from32bytes.o sc25519_window4.o fe25519_add.o fe25519_freeze.o fe25519_getparity.o fe25519_invert.o fe25519_iseq_vartime.o fe25519_mul.o fe25519_neg.o fe25519_nsquare.o fe25519_pack.o fe25519_pow2523.o fe25519_setint.o fe25519_square.o fe25519_sub.o fe25519_unpack.o ge25519_pack.o ge25519_unpack.o ge25519_setneutral.o ge25519_dbl_p1p1.o ge25519_add_p1p1.o ge25519_nielsadd2.o ge25519_p1p1_to_p2.o ge25519_p1p1_to_p3.o ge25519_double.o ge25519_add.o ge25519_scalarmult_base.o ge25519_scalarmult.o ge25519_lookup.o ge25519_lookup_niels.o ge4x.o  gfe4x.o  gfe4x_add.o  gfe4x_nsquare.o  gfe4x_square.o  gfe4x_getparity.o gfe4x_iseq_vartime.o gfe4x_mul.o  gfe4x_pow2523.o gfe4x_sub.o  ge4x_double_p1p1.o ge4x_add_p1p1.o ge4x_niels_add_p1p1.o ge4x_unpack_vartime.o ge4x_pack.o ge4x_lookup_niels.o ge4x_lookup.o consts.o consts4x.o

@@ -8,7 +8,8 @@
 #include <string>
 using namespace std;
 
-#define MAXSIZE 2048
+//#define MAXSIZE 2048
+#define MAXSIZE 4096
 
 struct msgbuf_
 {

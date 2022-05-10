@@ -38,10 +38,10 @@ int BLS_::verify(const bls_sigma _sigma, const string msg)
 
 void BLS_::sign_scale(const bls_sk scale, const string msg)
 {
-    mclBnG2_hashAndMapTo(&sigma, (const char *)msg.c_str(), msg.size());
+    mclBnG2_hashAndMapTo(&sigma, (const char *)msg.c_str(), msg.size()); 
     bls_sk sign_sk;
-    mclBnFr_mul(&sign_sk, &sk, &scale);
-    mclBnG2_mul(&sigma, &sigma, &sign_sk);
+    mclBnFr_mul(&sign_sk, &sk, &scale); 
+    mclBnG2_mul(&sigma, &sigma, &sign_sk); 
 }
 
 void BLS_::dstb_keygen(Player &P)
@@ -50,29 +50,29 @@ void BLS_::dstb_keygen(Player &P)
     vector<bls_sk> shs;
     vector<bls_vk> aux;
     v.rnd_secret();
-    v.gen_share(shs, aux);
+    v.gen_share(shs, aux); 
 
-    sk = shs[P.my_num()];
-    vk = aux[0];
+    sk = shs[P.my_num()]; 
+    vk = aux[0];  
 
     vector<bls_sk> tmp_shares(P.num_players());
     vector<vector<bls_vk>> aux_tmp(P.num_players(), vector<bls_vk>(aux.size()));
     string ss;
-    mclBnG1_to_str(ss, aux[0]);
+    mclBnG1_to_str(ss, aux[0]); 
 
-    vector<string> CommAux(P.num_players());
-    vector<string> OpenAux(P.num_players());
+    vector<string> CommAux(P.num_players()); 
+    vector<string> OpenAux(P.num_players()); 
     octetStream os_comm;
     octetStream os_open;
     octetStream os_data(ss.size(), (const octet *)ss.data());
-    Commit(os_comm, os_open, os_data, 1); //P.my_num());
+    Commit(os_comm, os_open, os_data, 1); 
 
     // send my commitment
-    P.send_all(os_comm);
+    P.send_all(os_comm); 
 
     // receive other commitments
     vector<octetStream> os_comms(P.num_players()); // CommAux(P.num_players());
-    P.receive_all(os_comms);
+    P.receive_all(os_comms); 
 
     // send my opening
     P.send_all(os_open);
@@ -144,14 +144,14 @@ void BLS_::dstb_keygen(Player &P)
         if (i != P.my_num())
         {
             octetStream os_ss;
-            bool res1 = Open(os_ss, os_comms[i], os_opens[i], 1); //P.my_num());
+            bool res1 = Open(os_ss, os_comms[i], os_opens[i], 1); //P.my_num()); 
             ss.clear();
             ss.assign((char *)os_ss.get_data(), os_ss.get_length()); // opt. yyltodo
 
-            bool res2 = v.verify_share(tmp_shares[i], aux_tmp[i], P.my_num() + 1);
+            bool res2 = v.verify_share(tmp_shares[i], aux_tmp[i], P.my_num() + 1); 
             bls_vk a0;
             str_to_mclBnG1(a0, ss);
-            bool res3 = mclBnG1_isEqual(&a0, &aux_tmp[i][0]) ? true : false;
+            bool res3 = mclBnG1_isEqual(&a0, &aux_tmp[i][0]) ? true : false; 
             //*RC*// cout << " res1:" << res1 << " res2:" << res2 << " res3:" << res3 << endl;
             if (res1 && res2 && res3)
             {

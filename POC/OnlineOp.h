@@ -21,6 +21,7 @@
 
 static const unsigned int PSIZE = 381;
 static const unsigned int QSIZE = 254;
+static const unsigned int SEC = 40;
 template <class T>
 class OnlineOp
 {

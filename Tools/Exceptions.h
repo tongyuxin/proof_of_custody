@@ -81,6 +81,12 @@ class bad_value: public runtime_error
       public:
       bad_value(string msg = "Some value is wrong somewhere") : runtime_error(msg) {}
     };
+
+class bad_dabits_value: public runtime_error
+    {
+      public:
+      bad_dabits_value(string msg = "Some dabit value is wrong somewhere") : runtime_error(msg) {}
+    };
 class Offline_Check_Error: public runtime_error
     {
       public:

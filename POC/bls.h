@@ -117,7 +117,7 @@ public:
 
         G2Op<T> g2op(P, protocol, preprocessing, processor, output);
 
-        for (int i = 0; i < ac.size(); i++)
+        for (int i = 0; i < ac.size(); i++)  
         {
             g2op.get_inputs(i, ac[i].x, s[i][0]);
             g2op.get_inputs(i, ac[i].y, s[i][1]);
@@ -126,7 +126,7 @@ public:
         point_add_time.start();
         out = ac[0];
 
-        for (int i = 1; i < ac.size(); i++)
+        for (int i = 1; i < ac.size(); i++) 
         {
             g2op.add_aff_inplace(out, ac[i]);
         }

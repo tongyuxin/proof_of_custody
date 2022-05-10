@@ -65,7 +65,15 @@ public:
         vector<T> &shared_bits, vector<bigint> &local_bits, int online_num, Player &P,
         Config_Info &CI);
 
+    void shared_rand_bits_phase_one_new(
+        vector<T> &shared_bits,vector<bigint> &local_bits,vector<bigint> &sigma_bits,vector<bigint> &x_bits,  int online_num, Player &P,
+        Config_Info &CI);
+
     void decompose_and_reveal(
+        vector<bigint> &reveal_bits, const vector<T> &keys, const vector<T> &shared_bits,
+        int online_num, Player &P, Config_Info &CI);
+
+    void decompose_and_reveal_new(
         vector<bigint> &reveal_bits, const vector<T> &keys, const vector<T> &shared_bits,
         int online_num, Player &P, Config_Info &CI);
 
@@ -73,7 +81,15 @@ public:
         vector<T> &shared_bits, const vector<bigint> &local_bits, int online_num, Player &P,
         Config_Info &CI);
 
+    void shared_rand_bits_phase_two_new(
+        vector<T> &shared_bits, const vector<bigint> &local_bits,const vector<bigint> &sigma_bits,
+         const vector<bigint> &x_bits,int online_num, Player &P,Config_Info &CI);
+
     void xor_and_combine(
+        vector<T> &keys, const vector<T> &shared_bits, const vector<bigint> &reveal_bits,
+        int online_num, Player &P, Config_Info &CI);
+   
+    void xor_and_combine_new(
         vector<T> &keys, const vector<T> &shared_bits, const vector<bigint> &reveal_bits,
         int online_num, Player &P, Config_Info &CI);
 

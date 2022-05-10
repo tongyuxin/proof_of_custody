@@ -47,6 +47,13 @@ public:
   //===========================================
 
   // the 2 primes version
+  void run_poc_compute_ephem_key_2primes_phase_one_new(
+     vector<bigint> &local_bits, vector<bigint> &reveal_bits, BLS<T> &bls, 
+     const string &msg,Config_Info &CI,vector<bigint> &sigma_bits,vector<bigint> &x_bits);
+
+  void run_poc_compute_ephem_key_2primes_phase_two_new(
+      vector<T> &ek, const vector<bigint> &local_bits,const vector<bigint> &sigma_bits,const vector<bigint> &x_bits, 
+      const vector<bigint> &reveal_bits,Config_Info &CI);
   void run_poc_compute_ephem_key_2primes_phase_one(
       vector<bigint> &local_bits, vector<bigint> &reveal_bits, BLS<T> &bls, const string &msg,
       Config_Info &CI);

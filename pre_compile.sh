@@ -1,7 +1,7 @@
 #!/bin/bash
 # set -x
 
-bash ./pre_install.sh
+#bash ./pre_install.sh
 
 # ====================
 curdir=$(pwd)

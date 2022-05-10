@@ -11,7 +11,7 @@ void Commit(octetStream& comm,octetStream& open,const octetStream& message, int 
     comm = open.hash();
 }
 
-bool Open(octetStream& message,const octetStream& comm,const octetStream& open, int send_player)
+bool Open(octetStream& message,const octetStream& comm,const octetStream& open, int send_player)//检查承诺值
 {
     octetStream h = open.hash();
     octet* open_bytes = open.get_data();

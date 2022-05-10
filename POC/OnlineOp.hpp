@@ -484,8 +484,8 @@ void OnlineOp<T>::XOR_inplace(vector<T> &c, const vector<T> &a, unsigned int k)
   c = tmp;
 }
 template <class T>
-void OnlineOp<T>::XOR_plain(T &c, const T &a, const clear &b)
-{
+void OnlineOp<T>::XOR_plain(T &c, const T &a, const clear &b) 
+{//？
   T tmp;
   add_plain(c, a, b);
   mul_plain(tmp, a, b);
@@ -967,11 +967,12 @@ void OnlineOp<T>::A2B(vector<T> &bits, const T &a)
   decompose(f, bcp, PSIZE);
   decompose(tf, (TWO << PSIZE) + bcp - clear::pr(), PSIZE);
 
+
   for (int i = 0; i < PSIZE; i++)
   {
     mul_plain(tg[i], factor, tf[i] - f[i]);
     add_plain_inplace(tg[i], f[i]);
-  }
+  } 
 
   add_bit(bits, tg, bitr);
   bits.pop_back();
