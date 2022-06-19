@@ -35,4 +35,7 @@ void mclBnG1_to_str(string &str, const mclBnG1 &a);
 void str_to_mclBnG1(mclBnG1 &out, const string &str);
 
 void mclBnG2_to_str(vector<string> &out, const mclBnG2 &a);
+
+void mclBnG2_to_str_test(string &str, const mclBnG2 &a);
+
 // void mclBnG2_to_gfp(vector<gfp> &out, const mclBnG2 &a);

@@ -76,6 +76,17 @@ void mclBnG2_to_str(vector<string> &out, const mclBnG2 &a)
     out.back() = str;
 }
 
+void mclBnG2_to_str_test(string &str, const mclBnG2 &a)
+{
+    char buf[512];
+    int len = mclBnG2_getStr(buf, 512, &a, 10);
+
+    string str1(buf + 2, buf + len);
+    str=str1;
+    len = len - 2;
+
+}
+
 // void mclBnG2_to_gfp(vector<gfp> &out, const mclBnG2 &a)
 // {
 //     vector<string> str;

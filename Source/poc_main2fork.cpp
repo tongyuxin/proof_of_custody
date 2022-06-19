@@ -274,14 +274,29 @@ void run(const Paras &paras)
 
                 local_bits.resize(size);
                 reveal_bits.resize(size);
-                stringstream is(s);
+
                 for (size_t i = 0; i < local_bits.size(); i++)
                 {
-                    is >> local_bits[i];
+
+                    string s_tmp;
+                    s_tmp.resize(1);
+                    s_tmp[0]=s[i];
+                    mpz_class bnx1(s_tmp, 2);
+                    bigint bn1(bnx1);
+                    local_bits[i]=bn1;
                 }
+
+
                 for (size_t i = 0; i < reveal_bits.size(); i++)
                 {
-                    is >> reveal_bits[i];
+                    string s_tmp;
+                    s_tmp.resize(1);
+                    s_tmp[0]=s[i+reveal_bits.size()];
+                    mpz_class bnx1(s_tmp, 2);
+                    bigint bn1(bnx1);
+                    reveal_bits[i]=bn1;
+
+
                 }
                 // separation ..................
 

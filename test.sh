@@ -57,3 +57,4 @@ function run_tests_ex() {
 # run_tests_ex poc_main2.x
 #run_tests_ex poc_main2fork.x
 run_tests_ex poc_main2fork_new.x
+#run_tests_ex poc_main2fork_test.x

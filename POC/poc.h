@@ -99,6 +99,11 @@ public:
     int poc_compute_custody_bit_online_2primes(
         const vector<T> pre_key, const T key, const vector<clear> &msg, int online_num, Player &P,
         Config_Info &CI);
+
+    void poc_compute_ephem_key_test(vector<bigint> &out, BLS<T> &bls, const string &msg, int online_num, Player &P, Config_Info &CI);
+
+    int poc_compute_custody_bit_online_2primes_test(
+        const vector<clear> pre_key, const clear key, const vector<clear> &msg, int online_num, Player &P,Config_Info &CI);
 };
 
 #include "poc.hpp"

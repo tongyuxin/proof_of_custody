@@ -49,6 +49,8 @@ public:
 
     //sign with scale*sk on msg
     void sign_scale(const bls_sk scale, const string msg);
+    
+    void sign_scale_test(mclBnG2 &wu,const bls_sk scale, const string msg, Player &P);
 
     //distributed keygen,sign algorithms
     void dstb_keygen(Player &P);
@@ -116,11 +118,18 @@ public:
         mclBnG2_to_Complex_Plain(s[P.my_num()], sigma);
 
         G2Op<T> g2op(P, protocol, preprocessing, processor, output);
+        OnlineOp<T> online_op(P, protocol, preprocessing, processor, output);
 
         for (int i = 0; i < ac.size(); i++)  
         {
-            g2op.get_inputs(i, ac[i].x, s[i][0]);
-            g2op.get_inputs(i, ac[i].y, s[i][1]);
+
+            online_op.get_inputs(i, ac[i].x.real, s[i][0].real);
+            online_op.get_inputs(i, ac[i].x.imag, s[i][0].imag);
+            online_op.get_inputs(i, ac[i].y.real, s[i][1].real);
+            online_op.get_inputs(i, ac[i].y.imag, s[i][1].imag);
+
+            //g2op.get_inputs(i, ac[i].x, s[i][0]);
+           // g2op.get_inputs(i, ac[i].y, s[i][1]);
         }
 
         point_add_time.start();
@@ -141,4 +150,49 @@ public:
         cout << "used input mask: " << g2op.UT.UsedInputMask << endl;
 #endif
     }
+
+    void dstb_sign_test(vector<bigint> &out, const string msg, Player &P,
+                   typename T::Protocol &protocol, typename T::LivePrep &preprocessing, SubProcessor<T> &processor,
+                   typename T::MAC_Check &output)
+    {
+        Timer point_add_time;
+
+
+        mclBnFr lag_coeff;
+        get_lagrange_coeff(lag_coeff, P.num_players(), P.my_num() + 1);
+        
+        mclBnG2 sigma_plain;
+        sign_scale_test(sigma_plain,lag_coeff, msg, P);
+
+        cout<<"signature plain: "<<endl;
+        print_mclBnG2(sigma_plain);
+
+        vector<string> sigma_str;
+        mclBnG2_to_str(sigma_str,sigma_plain);
+        out.resize(4);
+        for(int i = 0; i < sigma_str.size(); i++)
+        {
+            mpz_class bnx(sigma_str[i], 10);
+            bigint bn(bnx);
+            //to_gfp(out[i], bn);
+            out[i]=bn;
+        }
+
+        // out.x.real = ac[0].real;
+        // out.x.imag = ac[0].imag;
+        // out.y.real = ac[1].real;
+        // out.y.imag = ac[1].imag;
+
+
+
+#if OK_CODE
+        cout << "used triple: " << g2op.UT.UsedTriples << endl;
+        cout << "used square: " << g2op.UT.UsedSquares << endl;
+        cout << "used bit: " << g2op.UT.UsedBit << endl;
+        cout << "used input mask: " << g2op.UT.UsedInputMask << endl;
+#endif
+    }
+
+
+
 };

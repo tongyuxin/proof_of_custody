@@ -194,14 +194,33 @@ void run(const Paras &paras)
         cout << "POC run_poc_setup elapsed(s):" << timer.elapsed_then_reset() << endl;
         PRINT_DEBUG_INFO();
 
-        vector<bigint> local_bits, reveal_bits,sigma_bits,x_bits;
+        vector<bigint> local_bits, reveal_bits;
+        vector<bigint> ek_tmp_plain;
         if (stage == 0 || stage == 1)
         {
             string nonce = get_nonce(P.my_num());
 
+
+            //Generation of POC ephemeral key in plaintext version
+            vector<bigint> ek_t;
+            poc.poc_compute_ephem_key_test(ek_t, bls, nonce, 0, P, CI);
+
+            vector<clear> ek_t1,ek_t2;
+            online_op.decompose(ek_t1,ek_t[0],PSIZE);
+            online_op.decompose(ek_t2,ek_t[1],PSIZE);
+
+            cout<<"t1 size"<<ek_t1.size()<<endl;
+            cout<<"t2 size"<<ek_t1.size()<<endl;
+
+
+            //vector<clear> ek_tmp;
+            ek_tmp_plain.insert(ek_tmp_plain.end(),ek_t1.begin(),ek_t1.end());
+            ek_tmp_plain.insert(ek_tmp_plain.end(),ek_t2.begin(),ek_t2.end());
+            cout<<"t3 size"<<ek_tmp_plain.size()<<endl;
+
+            //MPC version
             // stage 1-1
-            //runpoc.run_poc_compute_ephem_key_2primes_phase_one(local_bits, reveal_bits, bls, nonce, CI);
-            runpoc.run_poc_compute_ephem_key_2primes_phase_one_new(local_bits, reveal_bits, bls, nonce, CI, sigma_bits, x_bits);
+            runpoc.run_poc_compute_ephem_key_2primes_phase_one(local_bits, reveal_bits, bls, nonce, CI);
             cout << "POC run_poc_compute_ephem_key_2primes_phase_one elapsed(s):" << timer.elapsed_then_reset() << endl;
             PRINT_DEBUG_INFO();
 
@@ -211,21 +230,20 @@ void run(const Paras &paras)
                 stringstream ss;
                 for (size_t i = 0; i < local_bits.size(); i++)
                 {
+
                     ss << local_bits[i];
                 }
+
                 for (size_t i = 0; i < reveal_bits.size(); i++)
                 {
+
                     ss << reveal_bits[i];
                 }
-                for (size_t i = 0; i < sigma_bits.size(); i++)
-                {
-                    ss << sigma_bits[i];
-                }
-                for (size_t i = 0; i < x_bits.size(); i++)
-                {
-                    ss << x_bits[i];
-                }
 
+                for (size_t i = 0; i < ek_tmp_plain.size(); i++)
+                {
+                    ss << ek_tmp_plain[i];
+                }
                 int size = local_bits.size();
                 string s(ss.str());
                 int len = s.size();
@@ -282,12 +300,10 @@ void run(const Paras &paras)
                 memcpy((char *)s.data(), msg.buf.mtext, msg.buf.mlen);
                 cout << "recv len:" << len << ",size:" << size << endl;
 
-                local_bits.resize(size);
-                //reveal_bits.resize(size);
-                reveal_bits.resize(size - SEC);
-                sigma_bits.resize(2*PSIZE);
-                x_bits.resize(SEC);
 
+                local_bits.resize(size);
+                reveal_bits.resize(size);
+                ek_tmp_plain.resize(size);
 
                 for (size_t i = 0; i < local_bits.size(); i++)
                 {
@@ -298,56 +314,116 @@ void run(const Paras &paras)
                     mpz_class bnx1(s_tmp, 2);
                     bigint bn1(bnx1);
                     local_bits[i]=bn1;
+
                 }
 
                 for (size_t i = 0; i < reveal_bits.size(); i++)
                 {
                     string s_tmp;
                     s_tmp.resize(1);
-                    s_tmp[0]=s[i+local_bits.size()];
+                    s_tmp[0]=s[i+reveal_bits.size()];
                     mpz_class bnx1(s_tmp, 2);
                     bigint bn1(bnx1);
                     reveal_bits[i]=bn1;
 
                 }
 
-
-                for (size_t i = 0; i < sigma_bits.size(); i++)
-                {
-
-                    string s_tmp;
-                    s_tmp.resize(1);
-                    s_tmp[0]=s[i+local_bits.size()+reveal_bits.size()];
-                    mpz_class bnx1(s_tmp, 2);
-                    bigint bn1(bnx1);
-                    sigma_bits[i]=bn1;
-
-                }
-
-
-
-                for (size_t i = 0; i < x_bits.size(); i++)
+                for (size_t i = 0; i < ek_tmp_plain.size(); i++)
                 {
                     string s_tmp;
                     s_tmp.resize(1);
-                    s_tmp[0]=s[i+local_bits.size()+reveal_bits.size()+sigma_bits.size()];
+                    s_tmp[0]=s[i+2*ek_tmp_plain.size()];
                     mpz_class bnx1(s_tmp, 2);
                     bigint bn1(bnx1);
-                    x_bits[i]=bn1;
-
+                    ek_tmp_plain[i]=bn1;
                 }
+                //error code
+                // stringstream is(s);
+                // for (size_t i = 0; i < local_bits.size(); i++)
+                // {
+                //     is >> local_bits[i];
+                // }
+                // cout<<"localb"<<endl;
+                // for (size_t i = 0; i < reveal_bits.size(); i++)
+                // {
+                //     is >> reveal_bits[i];
+                // }
 
-                // separation ..................
+
 
                 msg.buf.mtype = 4; // end
                 msg.buf.mlen = 1;
                 ipc_msg_send(msg);
             }
 
-            // stage 2-1
+
+
+
+            //Plain version
+            vector<clear> keys;
+            vector<clear> out;
+            keys.resize(3);
+            for (int i = 0; i < keys.size(); i++)
+            {
+                out.insert(out.begin(), ek_tmp_plain.begin() + i * QSIZE, ek_tmp_plain.begin() + (i + 1) * QSIZE);
+                online_op.B2A(keys[i], out, QSIZE);
+                out.clear();
+                cout<<"ek_plain"<<keys[i]<<endl;
+            }
+
+
+            vector<clear> pre_key_plain;
+            pre_key_plain.resize(CHUNK_NUM);
+            clear s0_cube, s1_cube, s2_cube;
+
+            s0_cube=keys[0]*keys[0];
+            s0_cube=s0_cube*keys[0];
+
+            s1_cube=keys[1]*keys[1];
+            s1_cube=s1_cube*keys[1];
+            
+            s2_cube=keys[2]*keys[2];
+            pre_key_plain[1]=s2_cube;
+            s2_cube=s2_cube*keys[2];
+
+            pre_key_plain[0] = keys[1];
+            pre_key_plain[2] = s0_cube;
+
+            for (int i = 3; i < CHUNK_NUM; i++)
+            {
+                if (i % 1000 == 0)
+                    PRINT_DEBUG_INFO();
+                if (i % 3 == 0)
+                {
+                    pre_key_plain[i] = pre_key_plain[i - 3] * s1_cube;
+ 
+                }
+                else if (i % 3 == 1)
+                {
+                    pre_key_plain[i] = pre_key_plain[i - 3] * s2_cube;
+
+                }
+                else if (i % 3 == 2)
+                {
+                    pre_key_plain[i] = pre_key_plain[i - 3] * s0_cube;
+                }
+            }
+
+            //  for (int k = 0; k < 10; k++)
+            // {
+                vector<clear> msg_plain(CHUNK_NUM);
+                get_msg(P.my_num(), msg_plain);
+
+                PRINT_DEBUG_INFO();
+                int bit_plain = poc.poc_compute_custody_bit_online_2primes_test(pre_key_plain, keys[0], msg_plain, 0, P, CI);
+                cout << "custody plain bit(final XOR): " << bit_plain << endl;
+                PRINT_DEBUG_INFO();
+            //}
+
+            //MPC version                                                                                                                
+            // // stage 2-1
             vector<T> ek(3);
-            //runpoc.run_poc_compute_ephem_key_2primes_phase_two(ek, local_bits, reveal_bits, CI);
-            runpoc.run_poc_compute_ephem_key_2primes_phase_two_new(ek, local_bits,sigma_bits,x_bits, reveal_bits, CI);
+            runpoc.run_poc_compute_ephem_key_2primes_phase_two(ek, local_bits, reveal_bits, CI);
             cout << "POC run_poc_compute_ephem_key_2primes_phase_two elapsed(s):" << timer.elapsed_then_reset() << endl;
             PRINT_DEBUG_INFO();
 
@@ -358,17 +434,17 @@ void run(const Paras &paras)
             PRINT_DEBUG_INFO();
 
             // stage 2-3
-            for (int k = 0; k < 10; k++)
-            {
+            // for (int k = 0; k < 10; k++)
+            // {
                 vector<clear> msg(CHUNK_NUM);
                 get_msg(P.my_num(), msg);
 
                 PRINT_DEBUG_INFO();
                 int bit = runpoc.run_poc_compute_custody_bit_online_2primes(pre_key, ek[0], msg, CI);
                 cout << "POC run_poc_compute_custody_bit_online_2primes elapsed(s):" << timer.elapsed_then_reset() << endl;
-                cout << "custody bit: " << bit << endl;
+                cout << "MPC custody bit(final XOR): " << bit << endl;
                 PRINT_DEBUG_INFO();
-            }
+            //}
         }
     }
 

@@ -44,6 +44,35 @@ void BLS_::sign_scale(const bls_sk scale, const string msg)
     mclBnG2_mul(&sigma, &sigma, &sign_sk); 
 }
 
+void BLS_::sign_scale_test(mclBnG2 &wu,const bls_sk scale, const string msg ,Player &P)
+{
+    mclBnG2_hashAndMapTo(&wu, (const char *)msg.c_str(), msg.size()); 
+    bls_sk sign_sk;
+    mclBnFr_mul(&sign_sk, &sk, &scale); 
+
+    string sk_plain;
+    mclBnFr_to_str(sk_plain,sign_sk);
+
+    octetStream sk_str(sk_plain.size(), (const octet *)sk_plain.data());
+    P.send_all(sk_str);
+    vector<octetStream> sk_rev(P.num_players()); // OpenAux(P.num_players());
+    P.receive_all(sk_rev);
+
+    mclBnFr m;
+    for (int i = 0; i < P.num_players(); i++)
+        {
+            if (i != P.my_num())
+            {
+                string ss;
+                ss.assign((char *)sk_rev[i].get_data(), sk_rev[i].get_length()); // opt. yyltodo
+                str_to_mclBnFr(m, ss);
+                mclBnFr_add(&sign_sk,&sign_sk,&m);
+            }
+        }
+
+    mclBnG2_mul(&wu, &wu, &sign_sk); 
+}
+
 void BLS_::dstb_keygen(Player &P)
 {
     VSS v(nparty, threshold);

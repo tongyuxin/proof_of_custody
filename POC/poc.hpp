@@ -12,6 +12,13 @@ void POC<T>::poc_compute_ephem_key(G2_Affine_Coordinates<T> &out, BLS<T> &bls, c
     bls.dstb_sign(out, msg, P, protocol, preprocessing, processor, output);
 }
 
+template <class T>
+void POC<T>::poc_compute_ephem_key_test(vector<bigint> &out, BLS<T> &bls, const string &msg, int online_num, Player &P, Config_Info &CI)
+{
+    //bls.dstb_sign_test1(out, msg, P, protocol, preprocessing, processor, output);
+    bls.dstb_sign_test(out, msg, P, protocol, preprocessing, processor, output);
+}
+
 // pre_key = (s_1, s_0^2, s_1^3, s_0^4,...,)
 template <class T>
 void POC<T>::poc_compute_custody_bit_offline(vector<T> &pre_key, const vector<T> &keys, int online_num, Player &P, Config_Info &CI)
@@ -138,7 +145,7 @@ void POC<T>::shared_rand_bits_phase_one_new(vector<T> &shared_bits,vector<bigint
             tmp = local_bits[j];
             //sbit[i].set_player(P.whoami());
             //if (i == P.whoami()) {
-            online_op.get_inputs(i, sbit[i], tmp);                                
+            online_op.get_inputs(i, sbit[i], tmp);                            
             //}
         }
         online_op.KXOR(shared_bits[j], sbit, sbit.size()); 
@@ -262,7 +269,7 @@ void POC<T>::shared_rand_bits_phase_one(vector<T> &shared_bits, vector<bigint> &
             tmp = local_bits[j];
             //sbit[i].set_player(P.whoami());
             //if (i == P.whoami()) {
-            online_op.get_inputs(i, sbit[i], tmp);                                
+            online_op.get_inputs(i, sbit[i], tmp);                              
             //}
         }
         online_op.KXOR(shared_bits[j], sbit, sbit.size());                              
@@ -650,7 +657,9 @@ int POC<T>::poc_compute_custody_bit_online_2primes(
         clear count(i);
         T in;
         online_op.add_plain(in, uhf_out, count);
-        res &= online_op.legendre_prf(key, in);
+        int out=online_op.legendre_prf(key, in);
+        cout<<"MPC bit"<<out<<endl;
+        res &= out;
     }
 
     //*RC*// cout << "used triple: " << online_op.UT.UsedTriples << endl;
@@ -659,4 +668,58 @@ int POC<T>::poc_compute_custody_bit_online_2primes(
     //*RC*// cout << "used input mask: " << online_op.UT.UsedInputMask << endl;
 
     return res;
+}
+
+
+template <class T>
+int POC<T>::poc_compute_custody_bit_online_2primes_test(
+    const vector<clear> pre_key, const clear key, const vector<clear> &msg, int online_num, Player &P, Config_Info &CI)
+{
+    if (msg.size() != CHUNK_NUM)
+    {
+        throw bad_value();
+    }
+    OnlineOp<T> online_op(P, protocol, preprocessing, processor, output);
+
+    clear uhf_out;
+
+    uhf_out=pre_key[0]* msg[1];
+    uhf_out=uhf_out + msg[0]; // m[0] + m[1]*s1
+
+    clear tmp;
+
+    for (int i = 2; i < msg.size(); i++)
+    {
+        tmp=pre_key[i - 1]* msg[i];
+        uhf_out=uhf_out + tmp;
+    }
+
+    uhf_out=uhf_out + pre_key.back();
+
+    int out = 0;
+    for (int i = 0; i < 10; i++)
+    {
+        clear count(i);
+        clear in;
+        in=uhf_out+count+key;
+
+
+        int res = 0;
+        
+        bigint bn;
+
+        to_bigint(bn, in);
+        res = mpz_legendre(bn.get_mpz_t(), clear::pr().get_mpz_t());
+        res = ceil(double(res + 1) / 2);
+        cout<<"plain bit"<< res <<endl;
+        out &= res;
+
+    }
+
+    //*RC*// cout << "used triple: " << online_op.UT.UsedTriples << endl;
+    //*RC*// cout << "used square: " << online_op.UT.UsedSquares << endl;
+    //*RC*// cout << "used bit: " << online_op.UT.UsedBit << endl;
+    //*RC*// cout << "used input mask: " << online_op.UT.UsedInputMask << endl;
+
+    return out;
 }

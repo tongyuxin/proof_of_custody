@@ -7,7 +7,7 @@ Under Development ...
 - First, clone the code from Github. (`with --recurse`)
 
 ```bash
-git clone --recurse https://github.com/PlatONnetwork/proof_of_custody.git
+git clone --recurse https://github.com/tongyuxin/proof_of_custody.git
 ```
 
 - Next, install some dependencies by executing the following script.
@@ -35,6 +35,12 @@ sudo bash ./pre_install.sh
 ```
 > parties: the number of parties. default `2`. 
 > host: the host or ip of the party 0. default `localhost`. 
+
+- Other instructions
+
+1. Source/poc_main2fork.cpp : POC version without consistency check in daBits phase.
+2. Source/poc_main2fork_test.cpp : POC correctness verification(comparing the plaintext version POC with the MPC version POC).
+3. Source/poc_main2fork_new.cpp : POC implementation of daBits consistency check is added.
 
 
 
