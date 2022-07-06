@@ -779,13 +779,40 @@ size_t NamedCommStats::total_data()
   return res;
 }
 
+// void NamedCommStats::print(bool newline)
+// {
+//   for (auto it = begin(); it != end(); it++)
+//     if (it->second.data)
+//       cerr << it->first << " " << 1e-6 * it->second.data << " MB in "
+//       << it->second.rounds << " rounds, taking " << it->second.timer.elapsed()
+//       << " seconds" << endl;
+//   if (size() and newline)
+//     cerr << endl;
+// }
+
 void NamedCommStats::print(bool newline)
 {
   for (auto it = begin(); it != end(); it++)
     if (it->second.data)
-      cerr << it->first << " " << 1e-6 * it->second.data << " MB in "
+      cerr << it->first << " " << it->second.data /(double)1024 << " KB in "
       << it->second.rounds << " rounds, taking " << it->second.timer.elapsed()
       << " seconds" << endl;
+  if (size() and newline)
+    cerr << endl;
+}
+
+void NamedCommStats::print_and_reset(bool newline)
+{
+  for (auto it = begin(); it != end(); it++)
+    if (it->second.data){
+      cerr << it->first << " " << it->second.data /(double)1024 << " KB in "
+      << it->second.rounds << " rounds, taking " << it->second.timer.elapsed()
+      << " seconds" << endl;
+
+      it->second.data=0;
+      it->second.rounds=0;
+      it->second.timer=0;
+    }
   if (size() and newline)
     cerr << endl;
 }

@@ -137,6 +137,9 @@ void POC<T>::shared_rand_bits_phase_one_new(vector<T> &shared_bits,vector<bigint
 
     OnlineOp<T> online_op(P, protocol, preprocessing, processor, output);
     vector<T> sbit(P.num_players());
+
+    // cout<<"before randbit one"<<endl;
+    // P.comm_stats.print();
     for (int j = 0; j < 2 * PSIZE + SEC; j++)
     {
         for (int i = 0; i < sbit.size(); i++)
@@ -145,17 +148,29 @@ void POC<T>::shared_rand_bits_phase_one_new(vector<T> &shared_bits,vector<bigint
             tmp = local_bits[j];
             //sbit[i].set_player(P.whoami());
             //if (i == P.whoami()) {
-            online_op.get_inputs(i, sbit[i], tmp);                            
+            online_op.get_inputs(i, sbit[i], tmp);
+            
+            // cout<<"after get input"<<endl;
+            // P.comm_stats.print();                          
             //}
         }
         online_op.KXOR(shared_bits[j], sbit, sbit.size()); 
+
+        // cout<<"after xor"<<endl;
+        // P.comm_stats.print();  
         //shared_bits_tmp[j]=shared_bits[j];                        
     }
+
+    // cout<<"after randbit one"<<endl;
+    // P.comm_stats.print();
 
     //consistency check
     //r
     vector<T> r_bits(SEC+2);
     vector<T> tmp1(1);
+
+    // cout<<"before get one"<<endl;
+    // P.comm_stats.print();
     for (int i = 0; i < SEC+2; i++)
     {
       preprocessing.get_one(DATA_BIT, tmp1[0]);
@@ -163,29 +178,127 @@ void POC<T>::shared_rand_bits_phase_one_new(vector<T> &shared_bits,vector<bigint
       r_bits[i] = tmp1[0];
     }
 
+    // cout<<"after get one"<<endl;
+    // P.comm_stats.print();
+
+
     // vector<uint8_t> rnd1(96); // 2*381/8
     // //*RC*// P.G.get_random_bytes(rnd);
     // PRNG prng1;
     // prng1.ReSeed();
     // prng1.get_octets((octet *)rnd1.data(), sizeof(uint8_t) * rnd1.size());
+    
+    
+    
+    
     //sigma 
     
-    sigma_bits.resize(2 * PSIZE);
-    vector<T> sigma_b(2 * PSIZE);
-    vector<T> tmp_sigma(1);
+    // sigma_bits.resize(2 * PSIZE);
+    // vector<T> sigma_b(2 * PSIZE);
+    // vector<T> tmp_sigma(1);
 
-    for (int i = 0; i < sigma_b.size(); i++)
+    // for (int i = 0; i < sigma_b.size(); i++)
+    // {
+    //     preprocessing.get_one(DATA_BIT, tmp_sigma[0]);
+    //     sigma_b[i]=tmp_sigma[0];
+    //     //sigma_bits[i] =(rnd1[i / 8] >> (i % 8)) & 1  ;
+    // }
+    // vector<clear> sigma_reveal;
+    // online_op.reveal({sigma_b},sigma_reveal);
+    // for (int i = 0; i < sigma_bits.size(); i++)
+    // {
+    //     to_bigint(sigma_bits[i], sigma_reveal[i]);
+    // }
+
+    //sigma 
+    vector<bigint> tmp_sigma(2 * PSIZE);
+    vector<uint8_t> rnd1(96); // 2*381/8
+    //*RC*// P.G.get_random_bytes(rnd);
+    PRNG prng1;
+    prng1.ReSeed();
+    prng1.get_octets((octet *)rnd1.data(), sizeof(uint8_t) * rnd1.size());
+    for (int i = 0; i < tmp_sigma.size(); i++)
     {
-        preprocessing.get_one(DATA_BIT, tmp_sigma[0]);
-        sigma_b[i]=tmp_sigma[0];
-        //sigma_bits[i] =(rnd1[i / 8] >> (i % 8)) & 1  ;
+
+        tmp_sigma[i] =(rnd1[i / 8] >> (i % 8)) & 1  ;
     }
-    vector<clear> sigma_reveal;
-    online_op.reveal({sigma_b},sigma_reveal);
-    for (int i = 0; i < sigma_bits.size(); i++)
-    {
-        to_bigint(sigma_bits[i], sigma_reveal[i]);
+    stringstream ss;
+    for(int i=0; i < tmp_sigma.size(); i++){
+        ss << tmp_sigma[i];
     }
+    string s(ss.str());
+    // for(int i=0;i<s.length();i++){
+    //     cout<<s[i];
+    // }
+
+    octetStream os_comm;
+    octetStream os_open;
+    octetStream os_data(s.size(), (const octet *)s.data());
+    Commit(os_comm, os_open, os_data, 1); 
+    // send my commitment
+
+    // cout<<"before send all"<<endl;
+    // P.comm_stats.print();
+    P.send_all(os_comm); 
+    // cout<<"after send all"<<endl;
+    // P.comm_stats.print();
+
+    // receive other commitments
+    vector<octetStream> os_comms(P.num_players()); // CommAux(P.num_players());
+    P.receive_all(os_comms); 
+
+    // cout<<"after receive all"<<endl;
+    // P.comm_stats.print();
+
+    // send my opening
+    P.send_all(os_open);
+
+    // cout<<"after send all open"<<endl;
+    // P.comm_stats.print();
+
+    // receive other opening
+    vector<octetStream> os_opens(P.num_players()); // OpenAux(P.num_players());
+    P.receive_all(os_opens);
+
+    // cout<<"after receive all open"<<endl;
+    // P.comm_stats.print();
+
+
+    
+    octetStream os_ss;
+    vector<string> sigma_share(P.num_players());
+    sigma_share[P.my_num()]= s;
+    for(int i=0; i<P.num_players();i++){
+        if(i!=P.my_num()){
+            bool res=Open(os_ss, os_comms[i],os_opens[i],1);
+            if(!res){
+                throw bad_dabits_value();
+            }
+            sigma_share[i].assign((char *)os_ss.get_data(), os_ss.get_length());
+        }
+    }
+
+
+    sigma_bits.resize(2 * PSIZE);
+
+
+    // vector<clear> neww;
+    // neww.resize(762);
+    vector<vector<bigint> > sigma_share_tmp(P.num_players(),vector<bigint> (762));
+    for(int i=0; i<762;i++){
+        for(int j=0;j<P.num_players();j++){
+            string s_tmp;
+            s_tmp.resize(1);
+            s_tmp[0]=sigma_share[j][i];
+            mpz_class bnx1(s_tmp, 2);
+            bigint bn1(bnx1);
+            sigma_share_tmp[j][i]=bn1;
+            sigma_bits[i]=sigma_bits[i] ^ sigma_share_tmp[j][i];
+        }
+
+        // cout<< sigma_bits[i];
+    }
+
     
 
     //x
@@ -219,7 +332,13 @@ void POC<T>::shared_rand_bits_phase_one_new(vector<T> &shared_bits,vector<bigint
     x_bits_plain.resize(SEC);
     vector<bigint> x_bits_tmp(SEC);
     vector<clear> x_tmp;
+    
+    // cout<<"before reveal"<<endl;
+    // P.comm_stats.print();
     online_op.reveal({x_bits},x_tmp);
+    
+    // cout<<"after reveal"<<endl;
+    // P.comm_stats.print();
     for(int i=0;i<SEC;i++){
         to_bigint(x_bits_tmp[i], x_tmp[i]);
         x_bits_plain[i]=x_bits_tmp[i] % 2;
@@ -347,21 +466,42 @@ void POC<T>::decompose_and_reveal_new(
 
     vector<T> deco_bits, tmp;
     PRINT_DEBUG_INFO();
+    // cout<<"before a2b"<<endl;
+    // P.comm_stats.print();
+
     online_op.A2B(deco_bits, keys[0]);
+
+    // cout<<"after a2b1"<<endl;
+    // P.comm_stats.print();
+
     PRINT_DEBUG_INFO();
     online_op.A2B(tmp, keys[1]);
+    
+    // cout<<"after a2b2"<<endl;
+    // P.comm_stats.print();
+
     PRINT_DEBUG_INFO();
     deco_bits.insert(deco_bits.end(), tmp.begin(), tmp.end());
 
     PRINT_DEBUG_INFO();
+    // cout<<"before xor"<<endl;
+    // P.comm_stats.print();
     for (int i = 0; i < 2 * PSIZE; i++)
     {
         online_op.XOR_inplace(deco_bits[i], shared_bits[i]);
     }
+    // cout<<"after xor"<<endl;
+    // P.comm_stats.print();
 
     PRINT_DEBUG_INFO();
     vector<clear> out;
+
+    // cout<<"before reveal"<<endl;
+    // P.comm_stats.print();
     online_op.reveal(deco_bits, out);
+
+    // cout<<"after reveal"<<endl;
+    // P.comm_stats.print();
     for (int i = 0; i < reveal_bits.size(); i++)
     {
         to_bigint(reveal_bits[i], out[i]);
@@ -386,8 +526,12 @@ void POC<T>::shared_rand_bits_phase_two_new(
 
     vector<T> sbit(P.num_players());
 
+    // cout<<"before before"<<endl;
+    // P.comm_stats.print();
     for (int j = 0; j < 2 * PSIZE + SEC; j++)
     {
+        // cout<<"get input before"<<endl;
+        // P.comm_stats.print();
 
         for (int i = 0; i < sbit.size(); i++)
         {
@@ -397,10 +541,19 @@ void POC<T>::shared_rand_bits_phase_two_new(
             //sbit[i].set_player(P.whoami());
             //if (i == P.whoami()) {
             online_op.get_inputs(i, sbit[i], tmp);
+            // cout<<"get input after"<<endl;
+            // P.comm_stats.print();
             //}
         }
+        // cout<<"xor before"<<endl;
+        // P.comm_stats.print();
         online_op.KXOR(shared_bits[j], sbit, sbit.size());
+        // cout<<"xor after"<<endl;
+        // P.comm_stats.print();
     }
+
+    // cout<<"before before"<<endl;
+    // P.comm_stats.print();
 
 
     //consistency Check
@@ -408,12 +561,20 @@ void POC<T>::shared_rand_bits_phase_two_new(
     //t
     vector<T> t_bits(SEC+2);
     vector<T> tmp1(1);
+    // cout<<"get one before"<<endl;
+    // P.comm_stats.print();
     for (int i = 0; i < SEC+2; i++)
     {
       preprocessing.get_one(DATA_BIT, tmp1[0]);
       // getTuples(tmp, BIT);
       t_bits[i] = tmp1[0];
+    //   cout<<"get one after"<<endl;
+    //   P.comm_stats.print();
     }
+
+    // cout<<"get one after"<<endl;
+    // P.comm_stats.print();
+
     //y
     vector<T> y_bits(SEC);
     vector<T> tmp2(2 * PSIZE);
@@ -443,7 +604,11 @@ void POC<T>::shared_rand_bits_phase_two_new(
     cout<<"Perform consistency check of daBits"<<endl;
     
     vector<clear> y_tmp;
+    // cout<<"reveal one before"<<endl;
+    // P.comm_stats.print();
     online_op.reveal({y_bits},y_tmp);
+    // cout<<"reveal one after"<<endl;
+    // P.comm_stats.print();
 
     for(int i=0;i<SEC;i++)
     {
@@ -543,6 +708,7 @@ void POC<T>::xor_and_combine_new(
     vector<T> &keys, const vector<T> &shared_bits, const vector<bigint> &reveal_bits,
     int online_num, Player &P, Config_Info &CI)
 {
+    
     if (shared_bits.size() != 3 * QSIZE + SEC || reveal_bits.size() != 3 * QSIZE)
     {
         throw invalid_length();
@@ -566,6 +732,8 @@ void POC<T>::xor_and_combine_new(
     }
     tmp.clear();
 
+
+
     //*RC*// cout << "used triple: " << online_op.UT.UsedTriples << endl;
     //*RC*// cout << "used square: " << online_op.UT.UsedSquares << endl;
     //*RC*// cout << "used bit: " << online_op.UT.UsedBit << endl;
@@ -586,10 +754,20 @@ void POC<T>::poc_compute_custody_bit_offline_2primes(
 
     pre_key.resize(CHUNK_NUM);
     T s0_cube, s1_cube, s2_cube;
+
+    // cout<<"sqr before1"<<endl;
+    // P.comm_stats.print();
     online_op.sqr(s0_cube, keys[0]);
+    // cout<<"sqr after1"<<endl;
+    // P.comm_stats.print();
     online_op.mul_inplace(s0_cube, keys[0]);
 
+    // cout<<"sqr before2"<<endl;
+    // P.comm_stats.print();
+
     online_op.sqr(s1_cube, keys[1]);
+    // cout<<"sqr after2"<<endl;
+    // P.comm_stats.print();
     online_op.mul_inplace(s1_cube, keys[1]);
 
     online_op.sqr(s2_cube, keys[2]);
@@ -652,15 +830,26 @@ int POC<T>::poc_compute_custody_bit_online_2primes(
     online_op.add_inplace(uhf_out, pre_key.back());
 
     int res = 0;
+
+    // int res1=0;
+
+    // for (int i = 0; i < 10; i++)
+    // {
+    //     clear count(i);
+    //     T in;
+    //     online_op.add_plain(in, uhf_out, count);
+    //     int out=online_op.legendre_prf(key, in);
+    //     cout<<"MPC bit"<<out<<endl;
+    //     res1 &= out;
+    // }
+    vector<T> in;
+    in.resize(10);
     for (int i = 0; i < 10; i++)
     {
         clear count(i);
-        T in;
-        online_op.add_plain(in, uhf_out, count);
-        int out=online_op.legendre_prf(key, in);
-        cout<<"MPC bit"<<out<<endl;
-        res &= out;
+        online_op.add_plain(in[i], uhf_out, count);
     }
+    res=online_op.legendre_prf_new(key, in);
 
     //*RC*// cout << "used triple: " << online_op.UT.UsedTriples << endl;
     //*RC*// cout << "used square: " << online_op.UT.UsedSquares << endl;

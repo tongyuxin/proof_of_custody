@@ -166,7 +166,7 @@ void RunPOC<T>::run_poc_compute_ephem_key_2primes_phase_one_new(
   timer.stop();
   // stats[ThreadPlayer::TP_PocEphemKey].set(P, timer.elapsed()).print(CI.verbose);
 
-  cout << "----------End of compute_enphem_key in 2 primes version phase_one------------" << endl;
+  cout << "----------End of compute_enphem_key in 2 primes version phase_one------------"<<timer.elapsed()<<"seconds"  << endl;
 }
 
 template <class T>
@@ -183,12 +183,14 @@ void RunPOC<T>::run_poc_compute_ephem_key_2primes_phase_two_new(
   //poc.shared_rand_bits_phase_two(shared_bits, local_bits, 0, P, CI);
   poc.shared_rand_bits_phase_two_new(shared_bits, local_bits,sigma_bits,x_bits, 0, P, CI);
   //poc.xor_and_combine(ek, shared_bits, reveal_bits, 0, P, CI);
+
   poc.xor_and_combine_new(ek, shared_bits, reveal_bits, 0, P, CI);
+
 
   timer.stop();
   // stats[ThreadPlayer::TP_PocEphemKey].set(P, timer.elapsed()).print(CI.verbose);
 
-  cout << "----------End of compute_enphem_key in 2 primes version phase_two------------" << endl;
+  cout << "----------End of compute_enphem_key in 2 primes version phase_two------------"<<timer.elapsed()<<"seconds" << endl;
 }
 
 

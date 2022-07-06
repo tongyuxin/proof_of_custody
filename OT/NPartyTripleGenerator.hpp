@@ -19,6 +19,8 @@
 #include <fstream>
 #include <math.h>
 
+#include "Networking/Player.h"
+
 template<class T>
 void* run_ot_thread(void* ptr)
 {
@@ -528,7 +530,20 @@ void OTTripleGenerator<U>::plainTripleRound(int k)
 
 template<class U>
 void SimpleMascotTripleGenerator<U>::generateTriples()
-{
+{   
+    // Names N;
+    // // PlainPlayer P(N);
+
+    // Player *player = nullptr;
+    // // if (paras.use_encryption)
+    // //     player = new CryptoPlayer(N);
+    // // else
+    //     player = new PlainPlayer(N); // ThreadPlayer P(N);
+    // Player &P = *player;
+    // //Player &P=new CryptoPlayer(N);
+    // cout<<"triple generate before"<<endl;
+    // P.comm_stats.print();
+
     typedef typename U::open_type T;
 
     auto& timers = this->timers;
@@ -630,6 +645,8 @@ void SimpleMascotTripleGenerator<U>::generateTriples()
             }
         }
     }
+    // cout<<"triple generate after"<<endl;
+    // P.comm_stats.print();
 }
 
 template<class T>

@@ -439,11 +439,13 @@ void run(const Paras &paras)
                 vector<clear> msg(CHUNK_NUM);
                 get_msg(P.my_num(), msg);
 
+
                 PRINT_DEBUG_INFO();
                 int bit = runpoc.run_poc_compute_custody_bit_online_2primes(pre_key, ek[0], msg, CI);
                 cout << "POC run_poc_compute_custody_bit_online_2primes elapsed(s):" << timer.elapsed_then_reset() << endl;
                 cout << "MPC custody bit(final XOR): " << bit << endl;
                 PRINT_DEBUG_INFO();
+
             //}
         }
     }

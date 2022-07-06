@@ -120,6 +120,9 @@ public:
         G2Op<T> g2op(P, protocol, preprocessing, processor, output);
         OnlineOp<T> online_op(P, protocol, preprocessing, processor, output);
 
+        // cout<<"getinput before"<<endl;
+        // P.comm_stats.print();
+
         for (int i = 0; i < ac.size(); i++)  
         {
 
@@ -128,9 +131,14 @@ public:
             online_op.get_inputs(i, ac[i].y.real, s[i][1].real);
             online_op.get_inputs(i, ac[i].y.imag, s[i][1].imag);
 
+            // cout<<"getinput one"<<endl;
+            // P.comm_stats.print();
             //g2op.get_inputs(i, ac[i].x, s[i][0]);
            // g2op.get_inputs(i, ac[i].y, s[i][1]);
         }
+
+        cout<<"aff add before"<<endl;
+        P.comm_stats.print();
 
         point_add_time.start();
         out = ac[0];
@@ -139,6 +147,9 @@ public:
         {
             g2op.add_aff_inplace(out, ac[i]);
         }
+
+        cout<<"aff add after"<<endl;
+        P.comm_stats.print();
         point_add_time.stop();
 
         cout << "point addition time (including part of the offline time): " << point_add_time.elapsed() << " seconds" << endl;

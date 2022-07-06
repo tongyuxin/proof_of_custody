@@ -97,7 +97,7 @@ void BLS_::dstb_keygen(Player &P)
     Commit(os_comm, os_open, os_data, 1); 
 
     // send my commitment
-    P.send_all(os_comm); 
+    P.send_all(os_comm);
 
     // receive other commitments
     vector<octetStream> os_comms(P.num_players()); // CommAux(P.num_players());

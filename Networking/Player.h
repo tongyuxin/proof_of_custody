@@ -113,6 +113,7 @@ public:
   NamedCommStats operator-(const NamedCommStats& other) const;
   size_t total_data();
   void print(bool newline = false);
+  void print_and_reset(bool newline = false);
 #ifdef VERBOSE_COMM
   CommStats& operator[](const string& name)
   {

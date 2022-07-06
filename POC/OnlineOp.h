@@ -172,6 +172,8 @@ public:
   void legendre(int &out, const T &in);
   int legendre_prf(const T &key, const T &in);
 
+  int legendre_prf_new(const T &key, const vector<T> &in);
+
   /* reveal */
   void reveal(const T &a, clear &r);
   void reveal(const vector<T> &a, vector<clear> &r);

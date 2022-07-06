@@ -174,13 +174,26 @@ void OnlineOp<T>::mul(vector<T> &c, const vector<T> &a, const vector<T> &b, unsi
   size_t n = a.size();
   c.resize(n);
 
+  // cout<<"initmul before"<<endl;
+  // P.comm_stats.print();
   protocol.init_mul(&processor);
+  // cout<<"initmul after"<<endl;
+  // P.comm_stats.print();
   for (size_t i = 0; i < n; i++)
     protocol.prepare_mul(a[i], b[i]);
 
+  // cout<<"prepare mul after"<<endl;
+  // P.comm_stats.print();
+
   protocol.exchange();
+
+  // cout<<"exchange mul after"<<endl;
+  // P.comm_stats.print();
   for (int i = 0; i < n; i++)
     c[i] = protocol.finalize_mul();
+  
+  // cout<<"finalize mul after"<<endl;
+  // P.comm_stats.print();
 }
 template <class T>
 void OnlineOp<T>::mul_plain(T &c, const T &a, const clear &b)
@@ -759,12 +772,18 @@ void OnlineOp<T>::pre_rand(T &r, vector<T> &bitr)
   {
     PRINT_DEBUG_INFO();
     vector<T> tmp(1);
+      
+    // cout<<"before get one"<<endl;
+    // P.comm_stats.print();
     for (int i = 0; i < PSIZE; i++)
     {
       preprocessing.get_one(DATA_BIT, tmp[0]);
       // getTuples(tmp, BIT);
       bitr[i] = tmp[0];
     }
+
+    // cout<<"after get one"<<endl;
+    // P.comm_stats.print();
 
     // cout << "pflag pbits[0]:" << pbits[0] << endl;
     // reveal(bitr, ptest);
@@ -775,9 +794,15 @@ void OnlineOp<T>::pre_rand(T &r, vector<T> &bitr)
     //   cout << " " << ptest[ii];
     // }
     // cout << endl;
-
+    // cout<<"before lt"<<endl;
+    // P.comm_stats.print();
     lt(flag, bitr, pbits, PSIZE);
+    // cout<<"after lt"<<endl;
+    // P.comm_stats.print();
     reveal({flag}, pflag);
+
+    // cout<<"after revealflag"<<endl;
+    // P.comm_stats.print();
 #if DEBUG
     cout << "pflag[0]:" << pflag[0] << endl;
 #endif
@@ -929,12 +954,26 @@ void OnlineOp<T>::A2B(vector<T> &bits, const T &a)
   T r, c;
   vector<T> bitr;
   PRINT_DEBUG_INFO();
+
+  // cout<<"random before"<<endl;
+  // P.comm_stats.print();
+
   pre_rand(r, bitr);
+
+  // cout<<"random after"<<endl;
+  // P.comm_stats.print();
+
   PRINT_DEBUG_INFO();
 
   sub(c, a, r); // c = a-r
   vector<clear> cp;
+
+  // cout<<"before reveal"<<endl;
+  // P.comm_stats.print();
   reveal({c}, cp);
+
+  // cout<<"after reveal"<<endl;
+  // P.comm_stats.print();
 
   bigint bcp;
   to_bigint(bcp, cp[0]); // reveal c
@@ -953,8 +992,15 @@ void OnlineOp<T>::A2B(vector<T> &bits, const T &a)
   }
   decompose(bound, clear::pr() - bcp, PSIZE);
   PRINT_DEBUG_INFO();
+
+  // cout<<"before lt"<<endl;
+  // P.comm_stats.print();
+
   lt(factor, bitr, bound, PSIZE);
   PRINT_DEBUG_INFO();
+
+  // cout<<"after lt"<<endl;
+  // P.comm_stats.print();
 
   //share of 1-factor
   mul_plain(tmp, factor, TWO);
@@ -972,9 +1018,15 @@ void OnlineOp<T>::A2B(vector<T> &bits, const T &a)
   {
     mul_plain(tg[i], factor, tf[i] - f[i]);
     add_plain_inplace(tg[i], f[i]);
-  } 
+  }
+
+  // cout<<"before addbit "<<endl;
+  // P.comm_stats.print();
 
   add_bit(bits, tg, bitr);
+
+  // cout<<"after addbit "<<endl;
+  // P.comm_stats.print();
   bits.pop_back();
 }
 
@@ -1020,6 +1072,46 @@ int OnlineOp<T>::legendre_prf(const T &key, const T &in)
   legendre(res, tmp);
   res = ceil(double(res + 1) / 2);
   return res;
+}
+
+template <class T>
+int OnlineOp<T>::legendre_prf_new(const T &key, const vector<T> &in)
+{
+  vector<T> tmp;
+  vector<T> s0(10),s1(10),s2(10);
+  tmp.resize(in.size());
+  // cout<<"get two before"<<endl;
+  // P.comm_stats.print();
+  for(int i=0;i<in.size();i++){
+    add(tmp[i], key, in[i]);
+    preprocessing.get_two(DATA_SQUARE, s0[i], s1[i]);//s0=a,s1=a^2
+  }
+  // cout<<"get two after"<<endl;
+  // P.comm_stats.print();
+
+  mul(s2, s1, tmp);
+
+  // cout<<"mul legendre after"<<endl;
+  // P.comm_stats.print();
+
+  vector<clear> c(10);
+  reveal({s2}, c);
+
+  // cout<<"reveal legendre after"<<endl;
+  // P.comm_stats.print();
+
+  vector<int> out(10),res(10);
+  int cus=0;
+  for(int i=0;i<10;i++){
+    bigint bn;
+    to_bigint(bn, c[i]);
+    out[i] = mpz_legendre(bn.get_mpz_t(), clear::pr().get_mpz_t());
+    res[i] = ceil(double(out[i] + 1) / 2);
+    cout<<"MPC bit"<<res[i]<<endl;
+    cus &= res[i];
+  }
+
+  return cus;
 }
 
 /* reveal */

@@ -35,7 +35,7 @@ int main(int argc, const char **argv)
         exit(1);
     }
 
-    paras.batchsize = 50;
+    paras.batchsize = 55;
     paras.run_stage = true;
     if (!paras.run_stage)
     {
@@ -157,15 +157,23 @@ void run(const Paras &paras)
     T::clear::init_default(paras.lgp);
     T::clear::next::init_default(paras.lgp, false);
     // must initialize MAC key for security of some protocols
+
+
+
     typename T::mac_key_type mac_key;
     T::read_or_generate_mac_key("", P, mac_key);
+    
+
     // global OT setup
     BaseMachine machine;
     if (T::needs_ot)
         machine.ot_setups.push_back({P});
+    
+
     // keeps tracks of preprocessing usage (triples etc)
     DataPositions usage;
     usage.set_num_players(P.num_players());
+
     // output protocol
     typename T::MAC_Check output(mac_key);
     // various preprocessing
@@ -175,6 +183,9 @@ void run(const Paras &paras)
     typename T::Input input(processor, output);
     // multiplication protocol
     typename T::Protocol protocol(P);
+
+    cout<<"chushihua"<<endl;
+    player->comm_stats.print_and_reset();
     cout << "POC init elapsed(s):" << timer.elapsed_then_reset() << endl;
 
     {
@@ -189,10 +200,14 @@ void run(const Paras &paras)
 
         int stage = paras.stage;
 
+
         // stage 0-0
         runpoc.run_poc_setup(bls, CI);
         cout << "POC run_poc_setup elapsed(s):" << timer.elapsed_then_reset() << endl;
         PRINT_DEBUG_INFO();
+
+        cout<<"setup"<<endl;
+        player->comm_stats.print_and_reset();
 
         vector<bigint> local_bits, reveal_bits,sigma_bits,x_bits;
         if (stage == 0 || stage == 1)
@@ -204,6 +219,9 @@ void run(const Paras &paras)
             runpoc.run_poc_compute_ephem_key_2primes_phase_one_new(local_bits, reveal_bits, bls, nonce, CI, sigma_bits, x_bits);
             cout << "POC run_poc_compute_ephem_key_2primes_phase_one elapsed(s):" << timer.elapsed_then_reset() << endl;
             PRINT_DEBUG_INFO();
+
+            cout<<"ephem_key_phase_one"<<endl;
+            player->comm_stats.print_and_reset();
 
             if (stage == 1)
             {
@@ -344,6 +362,17 @@ void run(const Paras &paras)
                 ipc_msg_send(msg);
             }
 
+            // online_opts.batch_size=12000;
+            // cout<<"mul before"<<endl;
+            // player->comm_stats.print_and_reset();
+            // T a,b,c;
+            // online_op.mul(a,b,c);
+            // cout<<"mul after"<<endl;
+            // player->comm_stats.print_and_reset();
+
+
+
+
             // stage 2-1
             vector<T> ek(3);
             //runpoc.run_poc_compute_ephem_key_2primes_phase_two(ek, local_bits, reveal_bits, CI);
@@ -351,15 +380,21 @@ void run(const Paras &paras)
             cout << "POC run_poc_compute_ephem_key_2primes_phase_two elapsed(s):" << timer.elapsed_then_reset() << endl;
             PRINT_DEBUG_INFO();
 
+            cout<<"ephem_key_phase_two"<<endl;
+            player->comm_stats.print_and_reset();
+
             // stage 2-2
             vector<T> pre_key;
             runpoc.run_poc_compute_custody_bit_offline_2primes(pre_key, ek, CI);
             cout << "POC run_poc_compute_custody_bit_offline_2primes elapsed(s):" << timer.elapsed_then_reset() << endl;
             PRINT_DEBUG_INFO();
 
+            cout<<"offline prekey"<<endl;
+            player->comm_stats.print_and_reset();
+
             // stage 2-3
-            for (int k = 0; k < 10; k++)
-            {
+            // for (int k = 0; k < 10; k++)
+            // {
                 vector<clear> msg(CHUNK_NUM);
                 get_msg(P.my_num(), msg);
 
@@ -368,7 +403,11 @@ void run(const Paras &paras)
                 cout << "POC run_poc_compute_custody_bit_online_2primes elapsed(s):" << timer.elapsed_then_reset() << endl;
                 cout << "custody bit: " << bit << endl;
                 PRINT_DEBUG_INFO();
-            }
+
+                cout<<"custodybit phase"<<endl;
+                player->comm_stats.print_and_reset();
+            //}
+
         }
     }
 
@@ -393,7 +432,7 @@ void run(const Paras &paras)
 
     T::LivePrep::teardown();
 #ifndef VERBOSE
-    player->comm_stats.print();
+    //player->comm_stats.print();
 #endif
     delete player;
 }
