@@ -481,6 +481,9 @@ void OnlineOp<T>::XOR(vector<T> &c, const vector<T> &a, const vector<T> &b, unsi
   sub_inplace(c, tmp, k);
   sub_inplace(c, tmp, k);
 }
+
+
+
 template <class T>
 void OnlineOp<T>::XOR_inplace(T &c, const T &a)
 {
@@ -494,6 +497,15 @@ void OnlineOp<T>::XOR_inplace(vector<T> &c, const vector<T> &a, unsigned int k)
   vector<T> tmp;
   c.resize(k);
   XOR(tmp, c, a, k);
+  c = tmp;
+}
+
+template <class T>
+void OnlineOp<T>::AND_inplace(vector<T> &c, const vector<T> &a, unsigned int k)
+{
+  vector<T> tmp;
+  c.resize(k);
+  AND(tmp, c, a, k);
   c = tmp;
 }
 template <class T>
@@ -570,6 +582,22 @@ void OnlineOp<T>::AND(T &c, const T &a, const T &b)
 {
   mul(c, a, b);
 }
+
+template <class T>
+void OnlineOp<T>::AND(vector<T> &c, const vector<T> &a, const vector<T> &b, unsigned int k)
+{
+  /// cout << "c: " << c.size() << endl;
+  /// cout << "a: " << a.size() << endl;
+  /// cout << "b: " << b.size() << endl;
+  /// cout << "k: " << k << endl;
+  if (a.size() != k || b.size() != k)
+    throw invalid_length();
+
+  /// cout << "xor here" << endl;
+
+  mul(c, a, b, k);
+}
+
 template <class T>
 void OnlineOp<T>::AND_inplace(T &c, const T &a)
 {
@@ -666,6 +694,56 @@ void OnlineOp<T>::KOR(T &c, const vector<T> &a, unsigned int k)
     KOR(c, half_c, (k + 1) / 2);
   }
 }
+
+
+template <class T>
+void OnlineOp<T>::KAND(T &c, const vector<T> &a, unsigned int k)
+{
+  if (a.size() != k)
+    throw invalid_length();
+
+  if (k == 1)
+  {
+    c = a[0];
+    return;
+  }
+
+  vector<T> half_c, half_a;
+
+  if (k % 2 == 0)
+  {
+    for (int i = 0; i < k / 2; i++)
+    {
+      half_c.push_back(a[2 * i]);
+      half_a.push_back(a[2 * i + 1]);
+    }
+
+    AND_inplace(half_c, half_a, k / 2);
+    KAND(c, half_c, k / 2);
+  }
+
+  if (k % 2 == 1)
+  {
+    for (int i = 0; i < (k - 1) / 2; i++)
+    {
+      half_c.push_back(a[2 * i]);
+      half_a.push_back(a[2 * i + 1]);
+    }
+    /// cout << "here 4" << endl;
+    /// cout << "half_c size: " << half_c.size() << endl;
+    /// cout << "half_a size: " << half_a.size() << endl;
+    /// cout << "k/2: " << k / 2 << endl;
+
+    AND_inplace(half_c, half_a, k / 2);
+
+    half_c.push_back(a[k - 1]);
+    /// cout << "here 5" << endl;
+    KAND(c, half_c, (k + 1) / 2);
+  }
+  /// cout << "here 3" << endl;
+}
+
+
 template <class T>
 void OnlineOp<T>::prefix_XOR(vector<T> &c, const vector<T> &a, unsigned int k) { TT_FUNC_NOT_IMPLEMENTED(); }
 template <class T>
@@ -1074,42 +1152,126 @@ int OnlineOp<T>::legendre_prf(const T &key, const T &in)
   return res;
 }
 
+// template <class T>
+// int OnlineOp<T>::legendre_prf_new(const T &key, const vector<T> &in)
+// {
+//   vector<T> tmp;
+//   vector<T> s0(10),s1(10),s2(10);
+//   tmp.resize(in.size());
+//   // cout<<"get two before"<<endl;
+//   // P.comm_stats.print();
+//   for(int i=0;i<in.size();i++){
+//     add(tmp[i], key, in[i]);
+//     preprocessing.get_two(DATA_SQUARE, s0[i], s1[i]);//s0=a,s1=a^2
+//   }
+//   // cout<<"get two after"<<endl;
+//   // P.comm_stats.print();
+
+//   mul(s2, s1, tmp);
+
+//   // cout<<"mul legendre after"<<endl;
+//   // P.comm_stats.print();
+
+//   vector<clear> c(10);
+//   reveal({s2}, c);
+
+//   // cout<<"reveal legendre after"<<endl;
+//   // P.comm_stats.print();
+
+//   vector<int> out(10),res(10);
+//   int cus=0;
+//   for(int i=0;i<10;i++){
+//     bigint bn;
+//     to_bigint(bn, c[i]);
+//     out[i] = mpz_legendre(bn.get_mpz_t(), clear::pr().get_mpz_t());
+//     res[i] = ceil(double(out[i] + 1) / 2);
+//     cout<<"MPC bit"<<res[i]<<endl;
+//     cus &= res[i];
+//   }
+
+//   return cus;
+// }
+
 template <class T>
 int OnlineOp<T>::legendre_prf_new(const T &key, const vector<T> &in)
 {
   vector<T> tmp;
-  vector<T> s0(10),s1(10),s2(10);
+  vector<T> s0(10),s1(10),s2(10),b0(10),b_tmp(10);
   tmp.resize(in.size());
+  
   // cout<<"get two before"<<endl;
   // P.comm_stats.print();
+
   for(int i=0;i<in.size();i++){
     add(tmp[i], key, in[i]);
     preprocessing.get_two(DATA_SQUARE, s0[i], s1[i]);//s0=a,s1=a^2
+    preprocessing.get_one(DATA_BIT, b0[i]);
   }
-  // cout<<"get two after"<<endl;
-  // P.comm_stats.print();
 
-  mul(s2, s1, tmp);
+  clear r_p = 3;
 
-  // cout<<"mul legendre after"<<endl;
-  // P.comm_stats.print();
+  // bigint r_pub;
+  // to_bigint(r_pub, r_p);
+  // int ccc = mpz_legendre(r_pub.get_mpz_t(), clear::pr().get_mpz_t());
+  // cout<<"ccc dddddddddddddddd"<< ccc << endl;
+  for(int i=0;i<in.size();i++){
+    mul_plain(b_tmp[i],b0[i],r_p);
+    T sb = T::constant(r_p, P.my_num(), processor.MC.get_alphai());
+    b_tmp[i] = sb-b_tmp[i];
+    add_inplace(b_tmp[i],b0[i]);
+  }
+
+  mul(s2, s1, b_tmp);
+  vector<T> s3(10);
+  mul(s3,s2,tmp);
 
   vector<clear> c(10);
-  reveal({s2}, c);
+  reveal({s3}, c);
 
-  // cout<<"reveal legendre after"<<endl;
-  // P.comm_stats.print();
 
-  vector<int> out(10),res(10);
-  int cus=0;
+
+  vector<T> y_tmp(10),t_tmp(10);
+  vector<int> u(10);
   for(int i=0;i<10;i++){
     bigint bn;
     to_bigint(bn, c[i]);
-    out[i] = mpz_legendre(bn.get_mpz_t(), clear::pr().get_mpz_t());
-    res[i] = ceil(double(out[i] + 1) / 2);
-    cout<<"MPC bit"<<res[i]<<endl;
-    cus &= res[i];
+    u[i] = mpz_legendre(bn.get_mpz_t(), clear::pr().get_mpz_t());
+    mul_plain(t_tmp[i],b0[i],2);
+    sub_plain_inplace(t_tmp[i],1);
+    mul_plain_inplace(t_tmp[i],u[i]);
+    add_plain_inplace(t_tmp[i],1);
+    t_tmp[i]=t_tmp[i]/2;
+    // clear out;
+    // reveal({t_tmp[i]}, out);
+    // cout<<"nnnnnnnnnnnnn"<<out<<endl;
   }
+
+
+  T out_n;
+  KAND(out_n,t_tmp,t_tmp.size());
+
+
+  clear out;
+  reveal({out_n}, out);
+
+
+  bigint outnew;
+  to_bigint(outnew, out);
+  string outout=to_string(outnew);
+  // bn = ceil(double(bn.get_mpz_t() + 1) / 2);
+  
+
+  // vector<int> out(10),res(10);
+  int cus=stoi(outout);
+
+  // for(int i=0;i<10;i++){
+  //   bigint bn;
+  //   to_bigint(bn, c[i]);
+  //   out[i] = mpz_legendre(bn.get_mpz_t(), clear::pr().get_mpz_t());
+  //   res[i] = ceil(double(out[i] + 1) / 2);
+  //   cout<<"MPC bit"<<res[i]<<endl;
+  //   cus &= res[i];
+  // }
 
   return cus;
 }

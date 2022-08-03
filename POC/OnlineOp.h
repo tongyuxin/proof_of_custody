@@ -123,6 +123,8 @@ public:
   void XOR(vector<T> &c, const vector<T> &a, const vector<T> &b, unsigned int k);
   void XOR_inplace(T &c, const T &a);
   void XOR_inplace(vector<T> &c, const vector<T> &a, unsigned int k);
+  void AND(vector<T> &c, const vector<T> &a, const vector<T> &b, unsigned int k);
+  void AND_inplace(vector<T> &c, const vector<T> &a, unsigned int k);
   void XOR_plain(T &c, const T &a, const clear &b);
   void XOR_plain(vector<T> &c, const vector<T> &a, const vector<clear> &b, unsigned int k);
 
@@ -138,6 +140,7 @@ public:
   void AND_plain(T &c, const T &a, const clear &b);
 
   void KXOR(T &c, const vector<T> &a, unsigned int k);
+  void KAND(T &c, const vector<T> &a, unsigned int k);
   void KOR(T &c, const vector<T> &a, unsigned int k);
   void prefix_XOR(vector<T> &c, const vector<T> &a, unsigned int k); /*not implemented*/
   void prefix_OR(vector<T> &c, const vector<T> &a, unsigned int k, int depth = -1);
