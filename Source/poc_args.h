@@ -13,6 +13,7 @@ public:
   int lgp = 128;  // Bit length of GF(p) field
   int lgp1 = 381;
   int lgp2 = 256;
+  int lgp3 = 255;
   std::string hostname = "127.0.0.1";
   int baseport = 8201;
   int batchsize = 100;

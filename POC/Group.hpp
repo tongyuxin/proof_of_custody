@@ -28,6 +28,19 @@ void G1Op<T>::add_plain_aff(G1_Affine_Coordinates<T> &c,
 }
 
 template <class T>
+void G1Op<T>::fixmul_plain_aff(G1_Affine_Coordinates<T> &c,
+                            const T &a,
+                            const G1_Affine_Coordinates_Plain<T> &b)
+{
+    T dx;
+    T m, mm;
+    this->mul_plain(c.x, a, b.x);
+    this->mul_plain(c.y, a, b.y);
+}
+
+
+
+template <class T>
 void G1Op<T>::add_plain_aff_inplace(G1_Affine_Coordinates<T> &c,
                                     const G1_Affine_Coordinates_Plain<T> &a)
 {
@@ -453,6 +466,18 @@ void G2Op<T>::add_plain_aff(G2_Affine_Coordinates<T> &c,
     this->sub(c.y, a.x, c.x);
     this->mul_inplace(c.y, m);
     this->sub_inplace(c.y, a.y); // y3 = m(x1-x3)-y1
+}
+
+template <class T>
+void G2Op<T>::fixmul_plain_aff(G2_Affine_Coordinates<T> &c,
+                            const T &a,
+                            const G2_Affine_Coordinates_Plain<T> &b)
+{
+
+    this->mul_plain(c.x.real, a, b.x.real);
+    this->mul_plain(c.x.imag, a, b.x.imag);
+    this->mul_plain(c.y.real, a, b.y.real);
+    this->mul_plain(c.y.imag, a, b.y.imag);
 }
 
 template <class T>

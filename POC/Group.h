@@ -93,6 +93,10 @@ public:
     void add_plain_aff(G1_Affine_Coordinates<T> &c,
                        const G1_Affine_Coordinates<T> &a,
                        const G1_Affine_Coordinates_Plain<T> &b);
+    
+    void fixmul_plain_aff(G1_Affine_Coordinates<T> &c,
+                       const T &a,
+                       const G1_Affine_Coordinates_Plain<T> &b);
 
     void add_plain_aff_inplace(G1_Affine_Coordinates<T> &c,
                                const G1_Affine_Coordinates_Plain<T> &a);
@@ -229,6 +233,10 @@ public:
     void add_plain_aff(G2_Affine_Coordinates<T> &c,
                        const G2_Affine_Coordinates<T> &a,
                        const G2_Affine_Coordinates_Plain<T> &b);
+
+    void fixmul_plain_aff(G2_Affine_Coordinates<T> &c,
+                            const T &a,
+                            const G2_Affine_Coordinates_Plain<T> &b);
 
     void add_plain_aff_inplace(G2_Affine_Coordinates<T> &c,
                                const G2_Affine_Coordinates_Plain<T> &a);

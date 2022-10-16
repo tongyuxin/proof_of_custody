@@ -36,6 +36,16 @@ void mclBnFr_to_str(string &str, const mclBnFr &a)
     str = string(buf, buf + sizeof(buf));
 }
 
+void mclBnFr_to_str_new(string &str, const mclBnFr &a)
+{
+    str.clear();
+    //char buf[mclBn_getFrByteSize()];
+    char buf[128];
+    mclBnFr_getStr(buf, sizeof(buf), &a, 10);
+    //mclBnFr_serialize(buf, sizeof(buf), &a);
+    str = string(buf, buf + sizeof(buf));
+}
+
 void mclBnG1_to_str(string &str, const mclBnG1 &a)
 {
     str.clear();
@@ -44,9 +54,40 @@ void mclBnG1_to_str(string &str, const mclBnG1 &a)
     str = string(buf, buf + sizeof(buf));
 }
 
+void mclBnG1_to_str_new(vector<string> &out, const mclBnG1 &a)
+{   
+    string str;
+    str.clear();
+    // char buf[mclBn_getG1ByteSize()];
+    // mclBnG1_serialize(buf, sizeof(buf), &a);
+
+    char buf[256];
+    mclBnG1_getStr(buf, sizeof(buf), &a, 10);
+    str = string(buf, buf + sizeof(buf));
+    if (out.size() != 3)
+    {
+        out.resize(3);
+    }
+    int l;
+
+    for (int i = 0; i < out.size() - 1; i++)
+    {
+        l = str.find(" ");
+        out[i] = str.substr(0, l);
+        str = str.substr(l + 1);
+    }
+    out.back() = str;
+}
+
 void str_to_mclBnFr(mclBnFr &out, const string &str)
 {
-    mclBnFr_deserialize(&out, str.c_str(), mclBn_getFrByteSize());
+    //mclBnFr_deserialize(&out, str.c_str(), mclBn_getFrByteSize());
+     
+     mclBnFr_deserialize(&out, str.c_str(), mclBn_getFrByteSize());
+
+    //  char buf[128];
+    // mclBnFr_getStr(buf, sizeof(buf), &a, 10);
+    // printf("%s\n", buf);
 }
 
 void str_to_mclBnG1(mclBnG1 &out, const string &str)

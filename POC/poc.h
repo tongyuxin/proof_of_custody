@@ -40,12 +40,19 @@ public:
     It is essentially the distrbuted key generation algorithm.
     */
     void poc_setup(BLS<T> &bls, Player &P);
+    
+    void poc_setup_new(T &sk_share,BLS<T> &bls, Player &P);
 
     /*
     Ephermeral key for UHF and legendre prf.
     It is essentially the distributed signing algorithms.
     */
     void poc_compute_ephem_key(G2_Affine_Coordinates<T> &out, BLS<T> &bls, const string &msg, int online_num, Player &P, Config_Info &CI);
+
+
+    void poc_compute_public_key(vector<T> &srk,vector<mclBnFr> &coeff_r, BLS<T> &bls, int online_num, Player &P, Config_Info &CI);
+
+    void poc_compute_ek(vector<T> &ek,vector<T> &srk, BLS<T> &bls, int online_num, Player &P, Config_Info &CI,const string &msg,vector<mclBnFr> &coeff_r);
 
     /*
     Compute UHF and legendre prf.
@@ -68,6 +75,11 @@ public:
     void shared_rand_bits_phase_one_new(
         vector<T> &shared_bits,vector<bigint> &local_bits,vector<bigint> &sigma_bits,vector<bigint> &x_bits,  int online_num, Player &P,
         Config_Info &CI);
+    
+    void shared_rand_bits_for_pk_phase_one_new(
+        vector<T> &shared_bits,vector<bigint> &local_bits,vector<bigint> &sigma_bits,vector<bigint> &x_bits,  int online_num, Player &P,
+        Config_Info &CI);
+    
 
     void decompose_and_reveal(
         vector<bigint> &reveal_bits, const vector<T> &keys, const vector<T> &shared_bits,
@@ -77,11 +89,21 @@ public:
         vector<bigint> &reveal_bits, const vector<T> &keys, const vector<T> &shared_bits,
         int online_num, Player &P, Config_Info &CI);
 
+    void decompose_and_reveal_for_pk_new(
+        vector<bigint> &reveal_bits, const T &sk_share, const vector<T> &shared_bits,
+        int online_num, Player &P, Config_Info &CI);
+    
+    
+
     void shared_rand_bits_phase_two(
         vector<T> &shared_bits, const vector<bigint> &local_bits, int online_num, Player &P,
         Config_Info &CI);
 
     void shared_rand_bits_phase_two_new(
+        vector<T> &shared_bits, const vector<bigint> &local_bits,const vector<bigint> &sigma_bits,
+         const vector<bigint> &x_bits,int online_num, Player &P,Config_Info &CI);
+
+    void shared_rand_bits_for_pk_phase_two_new(
         vector<T> &shared_bits, const vector<bigint> &local_bits,const vector<bigint> &sigma_bits,
          const vector<bigint> &x_bits,int online_num, Player &P,Config_Info &CI);
 
@@ -91,6 +113,10 @@ public:
    
     void xor_and_combine_new(
         vector<T> &keys, const vector<T> &shared_bits, const vector<bigint> &reveal_bits,
+        int online_num, Player &P, Config_Info &CI);
+    
+    void xor_for_pk_and_ek_new(
+        vector<T> &srk, const vector<T> &shared_bits, const vector<bigint> &reveal_bits,
         int online_num, Player &P, Config_Info &CI);
 
     void poc_compute_custody_bit_offline_2primes(

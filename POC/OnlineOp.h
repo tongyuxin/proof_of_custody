@@ -21,6 +21,7 @@
 
 static const unsigned int PSIZE = 381;
 static const unsigned int QSIZE = 254;
+static const unsigned int RSIZE = 255;
 static const unsigned int SEC = 40;
 template <class T>
 class OnlineOp
@@ -60,6 +61,8 @@ public:
   void sub(T &c, const T &a, const T &b);
   void sub(vector<T> &c, const vector<T> &a, const vector<T> &b, unsigned int k = -1);
   void sub_plain(T &c, const T &a, const clear &b);
+  
+  void sub_plain_new(T &c, const clear &a, const T &b);
   void sub_plain(vector<T> &c, const vector<T> &a, const vector<clear> &b, unsigned int k = -1);
   // c -= a
   void sub_inplace(T &c, const T &a);
@@ -151,6 +154,8 @@ public:
 
   //output random shares of r and bits of r, with uniformly random r.
   void pre_rand(T &r, vector<T> &bitr);
+  
+  void pre_rand_new(T &r, vector<T> &bitr);
 
   void carry_sum(T &ca_out, T &s, const T &x, const T &y, const T &ca_in);
   void carry_sum_plain(T &ca_out, T &s, const T &x, const clear &y, const T &ca_in);
@@ -169,6 +174,8 @@ public:
   //Arithmetic to Binary
   void A2B(vector<T> &bits, const T &c, unsigned int k);
   void A2B(vector<T> &bits, const T &a);
+
+  void A2B_new(vector<T> &bits, const T &a);
 
   // out = in[0] + in[1]*key + in[2]*key^2 +...+ in[size-1]*key^{size-1}
   void uhf(T &out, const T &key, const vector<clear> &in, unsigned int size);

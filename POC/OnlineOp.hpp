@@ -119,6 +119,14 @@ void OnlineOp<T>::sub_plain(T &c, const T &a, const clear &b)
   T sb = T::constant(b, P.my_num(), processor.MC.get_alphai());
   c = a - sb;
 }
+
+template <class T>
+void OnlineOp<T>::sub_plain_new(T &c, const clear &a, const T &b)
+{
+  T sa = T::constant(a, P.my_num(), processor.MC.get_alphai());
+  c = sa - b;
+}
+
 template <class T>
 void OnlineOp<T>::sub_plain(vector<T> &c, const vector<T> &a, const vector<clear> &b, unsigned int k /* = -1*/)
 {
@@ -895,6 +903,72 @@ void OnlineOp<T>::pre_rand(T &r, vector<T> &bitr)
   }
   PRINT_DEBUG_INFO();
 }
+
+
+template <class T>
+void OnlineOp<T>::pre_rand_new(T &r, vector<T> &bitr)
+{
+  PRINT_DEBUG_INFO();
+  bitr.resize(RSIZE);
+  vector<clear> pbits(RSIZE);
+  T flag;
+  vector<clear> pflag(1);
+  // vector<clear> ptest(PSIZE);
+
+  PRINT_DEBUG_INFO();
+  decompose(pbits, clear::pr(), RSIZE);
+  while (1)
+  {
+    PRINT_DEBUG_INFO();
+    vector<T> tmp(1);
+      
+    // cout<<"before get one"<<endl;
+    // P.comm_stats.print();
+    for (int i = 0; i < RSIZE; i++)
+    {
+      preprocessing.get_one(DATA_BIT, tmp[0]);
+      // getTuples(tmp, BIT);
+      bitr[i] = tmp[0];
+    }
+
+    // cout<<"after get one"<<endl;
+    // P.comm_stats.print();
+
+    // cout << "pflag pbits[0]:" << pbits[0] << endl;
+    // reveal(bitr, ptest);
+    // cout << "pflag bitr[0]:" << ptest[0] << endl;
+    // reveal_and_print(bitr);
+    // for (int ii = 0; ii < 10; ii++)
+    // {
+    //   cout << " " << ptest[ii];
+    // }
+    // cout << endl;
+    // cout<<"before lt"<<endl;
+    // P.comm_stats.print();
+    lt(flag, bitr, pbits, RSIZE);
+    // cout<<"after lt"<<endl;
+    // P.comm_stats.print();
+    reveal({flag}, pflag);
+
+    // cout<<"after revealflag"<<endl;
+    // P.comm_stats.print();
+#if DEBUG
+    cout << "pflag[0]:" << pflag[0] << endl;
+#endif
+    // sleep(1);
+
+    if (pflag[0] == 1)
+    {
+      B2A(r, bitr, RSIZE);
+      PRINT_DEBUG_INFO();
+      return;
+    }
+  }
+  PRINT_DEBUG_INFO();
+}
+
+
+
 template <class T>
 void OnlineOp<T>::carry_sum(T &ca_out, T &s, const T &x, const T &y, const T &ca_in)
 {
@@ -1107,6 +1181,88 @@ void OnlineOp<T>::A2B(vector<T> &bits, const T &a)
   // P.comm_stats.print();
   bits.pop_back();
 }
+
+
+template <class T>
+void OnlineOp<T>::A2B_new(vector<T> &bits, const T &a)
+{
+  T r, c;
+  vector<T> bitr;
+  PRINT_DEBUG_INFO();
+
+  // cout<<"random before"<<endl;
+  // P.comm_stats.print();
+  pre_rand_new(r, bitr);
+
+  // cout<<"random after"<<endl;
+  // P.comm_stats.print();
+
+  PRINT_DEBUG_INFO();
+
+  sub(c, a, r); // c = a-r
+  vector<clear> cp;
+
+  // cout<<"before reveal"<<endl;
+  // P.comm_stats.print();
+  reveal({c}, cp);
+
+  // cout<<"after reveal"<<endl;
+  // P.comm_stats.print();
+
+  bigint bcp;
+  to_bigint(bcp, cp[0]); // reveal c
+
+  T factor, tmp;
+  clear ONE = 1;
+  // ONE.assign(1);
+
+  bigint TWO(2);
+  vector<clear> bound;
+
+  if (bcp == 0)
+  {
+    bits = bitr;
+    return;
+  }
+  decompose(bound, clear::pr() - bcp, RSIZE);
+  PRINT_DEBUG_INFO();
+
+  // cout<<"before lt"<<endl;
+  // P.comm_stats.print();
+  lt(factor, bitr, bound, RSIZE);
+  PRINT_DEBUG_INFO();
+
+  // cout<<"after lt"<<endl;
+  // P.comm_stats.print();
+
+  //share of 1-factor
+  mul_plain(tmp, factor, TWO);
+  sub_inplace(factor, tmp);
+  add_plain_inplace(factor, ONE);
+
+  vector<clear> f, tf;
+  vector<T> tg(RSIZE);
+  decompose(f, bcp, RSIZE);
+  decompose(tf, (TWO << RSIZE) + bcp - clear::pr(), RSIZE);
+
+  for (int i = 0; i < RSIZE; i++)
+  {
+    mul_plain(tg[i], factor, tf[i] - f[i]);
+    add_plain_inplace(tg[i], f[i]);
+  }
+
+  // cout<<"before addbit "<<endl;
+  // P.comm_stats.print();
+
+  add_bit(bits, tg, bitr);
+
+  // cout<<"after addbit "<<endl;
+  // P.comm_stats.print();
+  bits.pop_back();
+}
+
+
+
 
 // out = in[0] + in[1]*key + in[2]*key^2 +...+ in[size-1]*key^{size-1}
 template <class T>

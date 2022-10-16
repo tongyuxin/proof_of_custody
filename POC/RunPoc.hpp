@@ -29,6 +29,29 @@ void RunPOC<T>::run_poc_setup(BLS<T> &bls, Config_Info &CI)
 }
 
 template <class T>
+void RunPOC<T>::run_poc_setup_new(T &sk_share, BLS<T> &bls, Config_Info &CI)
+{
+  cout << "----------Begin of setup-----------------------------" << endl;
+  // Player &P = *(tinfo[ThreadPlayer::TP_PocSetup].player);
+
+  Timer timer;
+  timer.start();
+  poc.poc_setup_new(sk_share, bls, P);
+  timer.stop();
+  // stats[ThreadPlayer::TP_PocSetup].set(P, timer.elapsed()).print(CI.verbose);
+
+  // if (CI.verbose > 0)
+  // {
+  //   cout << "secre key share: " << endl;
+  //   print_mclBnFr(bls.get_sk());
+
+  //   cout << "public key: " << endl;
+  //   print_mclBnG1(bls.vk);
+  // }
+  cout << "----------End of setup-------------------------------" << endl;
+}
+
+template <class T>
 void RunPOC<T>::run_poc_compute_ephem_key(vector<T> &ek, BLS<T> &bls, const string &msg, Config_Info &CI)
 {
   cout << "----------Begin of compute_enphem_key----------" << endl;
@@ -138,6 +161,34 @@ void RunPOC<T>::run_poc_compute_ephem_key_2primes_phase_one(
 
 
 template <class T>
+void RunPOC<T>::run_poc_compute_public_key_phase_one_new(
+    vector<bigint> &local_bits, vector<bigint> &reveal_bits, BLS<T> &bls,
+     Config_Info &CI,vector<bigint> &sigma_bits,vector<bigint> &x_bits, T &sk_share)
+{
+  cout << "----------Begin of compute_public_key in 2 primes version phase_one----------" << endl;
+  // Player &P = *(tinfo[ThreadPlayer::TP_PocEphemKey].player);
+
+  Timer timer;
+  timer.start();
+
+  vector<T> shared_bits;
+  PRINT_DEBUG_INFO();
+  //poc.shared_rand_bits_phase_one(shared_bits, local_bits, 0, P, CI);
+  poc.shared_rand_bits_for_pk_phase_one_new(shared_bits,local_bits,sigma_bits,x_bits, 0, P, CI);
+  PRINT_DEBUG_INFO();
+  //poc.decompose_and_reveal(reveal_bits, ek_tmp, shared_bits, 0, P, CI);
+  poc.decompose_and_reveal_for_pk_new(reveal_bits, sk_share, shared_bits, 0, P, CI);
+  PRINT_DEBUG_INFO();
+
+  timer.stop();
+  // stats[ThreadPlayer::TP_PocEphemKey].set(P, timer.elapsed()).print(CI.verbose);
+
+  cout << "----------End of compute_public_key in 2 primes version phase_one------------"<<timer.elapsed()<<"seconds"  << endl;
+}
+
+
+
+template <class T>
 void RunPOC<T>::run_poc_compute_ephem_key_2primes_phase_one_new(
     vector<bigint> &local_bits, vector<bigint> &reveal_bits, BLS<T> &bls,
      const string &msg,Config_Info &CI,vector<bigint> &sigma_bits,vector<bigint> &x_bits)
@@ -169,6 +220,33 @@ void RunPOC<T>::run_poc_compute_ephem_key_2primes_phase_one_new(
   cout << "----------End of compute_enphem_key in 2 primes version phase_one------------"<<timer.elapsed()<<"seconds"  << endl;
 }
 
+
+template <class T>
+void RunPOC<T>::run_poc_compute_ephem_key_2primes_phase_one_new1(
+    vector<T> &ek, vector<bigint> &local_bits, vector<bigint> &reveal_bits, BLS<T> &bls,
+     const string &msg,Config_Info &CI,vector<bigint> &sigma_bits,vector<bigint> &x_bits)
+{
+  cout << "----------Begin of compute_enphem_key in 2 primes version phase_one----------" << endl;
+  // Player &P = *(tinfo[ThreadPlayer::TP_PocEphemKey].player);
+
+  Timer timer;
+  timer.start();
+
+  vector<T> shared_bits;
+  PRINT_DEBUG_INFO();
+  //poc.shared_rand_bits_phase_one(shared_bits, local_bits, 0, P, CI);
+  poc.shared_rand_bits_phase_one_new(shared_bits,local_bits,sigma_bits,x_bits, 0, P, CI);
+  PRINT_DEBUG_INFO();
+  //poc.decompose_and_reveal(reveal_bits, ek_tmp, shared_bits, 0, P, CI);
+  poc.decompose_and_reveal_new(reveal_bits, ek, shared_bits, 0, P, CI);
+  PRINT_DEBUG_INFO();
+
+  timer.stop();
+  // stats[ThreadPlayer::TP_PocEphemKey].set(P, timer.elapsed()).print(CI.verbose);
+
+  cout << "----------End of compute_enphem_key in 2 primes version phase_one------------"<<timer.elapsed()<<"seconds"  << endl;
+}
+
 template <class T>
 void RunPOC<T>::run_poc_compute_ephem_key_2primes_phase_two_new(
     vector<T> &ek, const vector<bigint> &local_bits,const vector<bigint> &sigma_bits,const vector<bigint> &x_bits,
@@ -192,6 +270,46 @@ void RunPOC<T>::run_poc_compute_ephem_key_2primes_phase_two_new(
 
   cout << "----------End of compute_enphem_key in 2 primes version phase_two------------"<<timer.elapsed()<<"seconds" << endl;
 }
+
+template <class T>
+void RunPOC<T>::run_poc_compute_public_key_and_ek_phase_two_new(
+     vector<T> &ek,  BLS<T> &bls, const vector<bigint> &local_bits,const vector<bigint> &sigma_bits,const vector<bigint> &x_bits,
+     const vector<bigint> &reveal_bits,Config_Info &CI,const string &msg)
+{
+  cout << "----------Begin of compute_public_key phase_two----------" << endl;
+  // Player &P = *(tinfo[ThreadPlayer::TP_PocEphemKey].player);
+  Timer timer;
+  timer.start();
+
+  vector<T> shared_bits;
+  //poc.shared_rand_bits_phase_two(shared_bits, local_bits, 0, P, CI);
+  poc.shared_rand_bits_for_pk_phase_two_new(shared_bits, local_bits,sigma_bits,x_bits, 0, P, CI);
+  //poc.xor_and_combine(ek, shared_bits, reveal_bits, 0, P, CI);
+  vector<T> srk;
+  poc.xor_for_pk_and_ek_new(srk, shared_bits, reveal_bits, 0, P, CI);
+  
+  vector<mclBnFr> coeff_r(RSIZE);
+  poc.poc_compute_public_key(srk, coeff_r ,bls, 0, P, CI);
+
+  
+
+  cout << "POC run_poc_compute_public_key_phase_two elapsed(s):" << timer.elapsed_then_reset() << endl;
+  cout<<"public_key_phase_two"<<endl;
+  P.comm_stats.print_and_reset();
+
+  poc.poc_compute_ek(ek, srk, bls, 0, P, CI, msg, coeff_r);
+  cout << "ek compute end"<< endl;
+  cout << "POC run_poc_distributed_signing elapsed(s):" << timer.elapsed_then_reset() << endl;
+  cout<<"poc_distributed_signing"<<endl;
+  P.comm_stats.print_and_reset();
+
+  timer.stop();
+  //timer.stop();
+  // stats[ThreadPlayer::TP_PocEphemKey].set(P, timer.elapsed()).print(CI.verbose);
+
+  //cout << "----------End of compute_public_key phase_two------------"<<timer.elapsed()<<"seconds" << endl;
+}
+
 
 
 

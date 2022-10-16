@@ -48,13 +48,14 @@ function run_tests_ex() {
   Scripts/setup-ssl.sh $parties
   cp -f ${builddir}/${prog} ./
   for ((i = 1; i < $parties; i++)); do
-    ./${prog} -P $i -N $parties -h ${hostname} -lgp1 381 -lgp2 256 >logs/${prog}-$parties-$i.log 2>&1 &
+    ./${prog} -P $i -N $parties -h ${hostname} -lgp1 381 -lgp2 256 -lgp3 255 >logs/${prog}-$parties-$i.log 2>&1 &
   done
-  ./${prog} -P 0 -N $parties -h ${hostname} -lgp1 381 -lgp2 256 | tee logs/${prog}-$parties-0.log 2>&1
+  ./${prog} -P 0 -N $parties -h ${hostname} -lgp1 381 -lgp2 256 -lgp3 255 | tee logs/${prog}-$parties-0.log 2>&1
   cat logs/${prog}-$parties-0.log | grep POC | grep elapsed
 }
 # run_tests_ex poc_main.x
 # run_tests_ex poc_main2.x
 #run_tests_ex poc_main2fork.x
-run_tests_ex poc_main2fork_new.x
+#run_tests_ex poc_main2fork_new.x
 #run_tests_ex poc_main2fork_test.x
+run_tests_ex poc_main2fork_three.x

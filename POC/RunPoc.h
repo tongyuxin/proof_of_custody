@@ -33,6 +33,7 @@ public:
   */
   void run_init(int argc, char *argv[], Config_Info &CI);
   void run_poc_setup(BLS<T> &bls, Config_Info &CI);
+  void run_poc_setup_new(T &sk_share,BLS<T> &bls, Config_Info &CI);
   void run_offline(Config_Info &CI);
 
   void run_poc_compute_ephem_key(vector<T> &ek, BLS<T> &bls, const string &msg, Config_Info &CI);
@@ -51,9 +52,23 @@ public:
      vector<bigint> &local_bits, vector<bigint> &reveal_bits, BLS<T> &bls, 
      const string &msg,Config_Info &CI,vector<bigint> &sigma_bits,vector<bigint> &x_bits);
 
+
+  void run_poc_compute_public_key_phase_one_new(
+     vector<bigint> &local_bits, vector<bigint> &reveal_bits, BLS<T> &bls, 
+     Config_Info &CI,vector<bigint> &sigma_bits,vector<bigint> &x_bits,T &sk_share);
+
+void run_poc_compute_ephem_key_2primes_phase_one_new1(
+     vector<T> &ek,vector<bigint> &local_bits, vector<bigint> &reveal_bits, BLS<T> &bls, 
+     const string &msg,Config_Info &CI,vector<bigint> &sigma_bits,vector<bigint> &x_bits);
+
   void run_poc_compute_ephem_key_2primes_phase_two_new(
       vector<T> &ek, const vector<bigint> &local_bits,const vector<bigint> &sigma_bits,const vector<bigint> &x_bits, 
       const vector<bigint> &reveal_bits,Config_Info &CI);
+
+  void run_poc_compute_public_key_and_ek_phase_two_new(
+      vector<T> &ek , BLS<T> &bls ,const vector<bigint> &local_bits,const vector<bigint> &sigma_bits,const vector<bigint> &x_bits, 
+      const vector<bigint> &reveal_bits,Config_Info &CI,const string &msg);
+
   void run_poc_compute_ephem_key_2primes_phase_one(
       vector<bigint> &local_bits, vector<bigint> &reveal_bits, BLS<T> &bls, const string &msg,
       Config_Info &CI);
