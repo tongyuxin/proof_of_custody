@@ -230,8 +230,8 @@ void run(const Paras &paras)
         vector<bigint> local_bits_pk, reveal_bits_pk,sigma_bits_pk,x_bits_pk;
 
 
-        // cout<<"setup"<<endl;
-        // player->comm_stats.print_and_reset();
+        cout<<"setup"<<endl;
+        player->comm_stats.print_and_reset();
         if(stage == 3){
                     //stage 0-0
             T sk_share;
@@ -397,7 +397,7 @@ void run(const Paras &paras)
                     x_bits_pk[i]=bn1;
                 }
 
-                // // separation ..................
+                // // // separation ..................
 
                 msg.buf.mtype = 4; // end
                 msg.buf.mlen = 1;
@@ -413,12 +413,12 @@ void run(const Paras &paras)
                 runpoc.run_poc_compute_ephem_key_2primes_phase_one_new1(ek_tmp,local_bits, reveal_bits, bls, nonce, CI, sigma_bits, x_bits);
                 cout << "POC run_poc_compute_ephem_key_2primes_phase_one elapsed(s):" << timer.elapsed_then_reset() << endl;
                 
-                // cout<<"ephem_key_phase_one"<<endl;
-                // player->comm_stats.print_and_reset();
+                cout<<"ephem_key_phase_one"<<endl;
+                player->comm_stats.print_and_reset();
                 // PRINT_DEBUG_INFO();
 
 
-                // separation ..................
+                // // separation ..................
                 stringstream ss;
                 for (size_t i = 0; i < local_bits.size(); i++)
                 {
@@ -471,7 +471,7 @@ void run(const Paras &paras)
          {
             if (stage == 2)
             {
-                cout << "stage2222222222222"  << endl;
+                // cout << "stage2222222222222"  << endl;
                 int size;
                 int len;
                 string s;
@@ -549,7 +549,7 @@ void run(const Paras &paras)
 
                 }
 
-                // separation ..................
+                // // separation ..................
 
                 msg.buf.mtype = 4; // end
                 msg.buf.mlen = 1;

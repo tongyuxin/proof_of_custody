@@ -363,6 +363,23 @@ void POC<T>::shared_rand_bits_for_pk_phase_one_new(vector<T> &shared_bits,vector
         x_bits_plain[i]=x_bits_tmp[i] % 2;
     }
 
+     cout<<"Perform bit check of daBits"<<endl;
+    
+    for(int i=0;i<RSIZE;i++)
+    {
+        clear v=1;
+        T u;
+        online_op.sub_plain_new(u,v,shared_bits[i]);
+        online_op.mul_inplace(u,shared_bits[i]);
+        clear c;
+        online_op.reveal(u,c);
+        if(c != 0)
+        {
+            throw bad_dabits_value();
+        }
+    }
+    cout<<"The bit check passed!!!"<<endl;
+
     daBits_phase_one.stop();
     cout << "Time required for the first phase of daBits generation and verification(for public key generation): " << daBits_phase_one.elapsed() << " seconds" << endl;
 
@@ -606,6 +623,24 @@ void POC<T>::shared_rand_bits_phase_one_new(vector<T> &shared_bits,vector<bigint
         x_bits_plain[i]=x_bits_tmp[i] % 2;
     }
 
+
+    cout<<"Perform bit check of daBits"<<endl;
+    
+    for(int i=0;i<2 * PSIZE;i++)
+    {
+        clear v=1;
+        T u;
+        online_op.sub_plain_new(u,v,shared_bits[i]);
+        online_op.mul_inplace(u,shared_bits[i]);
+        clear c;
+        online_op.reveal(u,c);
+        if(c != 0)
+        {
+            throw bad_dabits_value();
+        }
+    }
+    cout<<"The bit check passed!!!"<<endl;
+
     daBits_phase_one.stop();
     cout << "Time required for the first phase of daBits generation and verification: " << daBits_phase_one.elapsed() << " seconds" << endl;
 
@@ -835,12 +870,14 @@ void POC<T>::shared_rand_bits_phase_two_new(
     vector<T> &shared_bits, const vector<bigint> &local_bits,const vector<bigint> &sigma_bits,
     const vector<bigint> &x_bits, int online_num, Player &P,Config_Info &CI)
 {
+
     Timer daBits_phase_two;
     daBits_phase_two.start();
     shared_bits.resize(2 * PSIZE+SEC);
     OnlineOp<T> online_op(P, protocol, preprocessing, processor, output);
 
     vector<T> sbit(P.num_players());
+   
 
     // cout<<"before before"<<endl;
     // P.comm_stats.print();
@@ -857,16 +894,21 @@ void POC<T>::shared_rand_bits_phase_two_new(
             //sbit[i].set_player(P.whoami());
             //if (i == P.whoami()) {
             online_op.get_inputs(i, sbit[i], tmp);
+
+           
             // cout<<"get input after"<<endl;
             // P.comm_stats.print();
             //}
         }
+       
         // cout<<"xor before"<<endl;
         // P.comm_stats.print();
         online_op.KXOR(shared_bits[j], sbit, sbit.size());
         // cout<<"xor after"<<endl;
         // P.comm_stats.print();
     }
+
+   
 
     // cout<<"before before"<<endl;
     // P.comm_stats.print();
@@ -938,6 +980,24 @@ void POC<T>::shared_rand_bits_phase_two_new(
         }
     }
     cout<<"The consistency check passed!!!"<<endl;
+
+    cout<<"Perform bit check of daBits"<<endl;
+    
+    for(int i=0;i<2 * PSIZE;i++)
+    {
+        clear v=1;
+        T u;
+        online_op.sub_plain_new(u,v,shared_bits[i]);
+        online_op.mul_inplace(u,shared_bits[i]);
+        clear c;
+        online_op.reveal(u,c);
+        if(c != 0)
+        {
+            throw bad_dabits_value();
+        }
+    }
+    cout<<"The bit check passed!!!"<<endl;
+
     daBits_phase_two.stop();
     cout << "Time required for the second phase of daBits generation and verification: " << daBits_phase_two.elapsed() << " seconds" << endl;
 
@@ -1056,6 +1116,23 @@ void POC<T>::shared_rand_bits_for_pk_phase_two_new(
         }
     }
     cout<<"The consistency check passed!!!"<<endl;
+
+    cout<<"Perform bit check of daBits"<<endl;
+    
+    for(int i=0;i<RSIZE;i++)
+    {
+        clear v=1;
+        T u;
+        online_op.sub_plain_new(u,v,shared_bits[i]);
+        online_op.mul_inplace(u,shared_bits[i]);
+        clear c;
+        online_op.reveal(u,c);
+        if(c != 0)
+        {
+            throw bad_dabits_value();
+        }
+    }
+    cout<<"The bit check passed!!!"<<endl;
     daBits_phase_two.stop();
     cout << "Time required for the second phase of daBits generation and verification (pk): " << daBits_phase_two.elapsed() << " seconds" << endl;
 

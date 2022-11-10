@@ -12,7 +12,7 @@ mkdir -p ${builddir}
 export LD_LIBRARY_PATH=${install_dir}/lib:$LD_LIBRARY_PATH
 mkdir -p logs Player-Data
 
-parties=${1:-3}
+parties=${1:-2}
 hostname=${2:-"localhost"}
 # run_tests <program name>
 function run_tests() {

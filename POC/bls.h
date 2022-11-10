@@ -197,9 +197,8 @@ public:
                    typename T::Protocol &protocol, typename T::LivePrep &preprocessing, SubProcessor<T> &processor,
                    typename T::MAC_Check &output)
     {
-
-        
-        
+        G1Op<T> g1op(P, protocol, preprocessing, processor, output);
+        OnlineOp<T> online_op(P, protocol, preprocessing, processor, output);
         string strp = "52435875175126190479447740508185965837690552500527637822603658699938581184513";
         mpz_class bnx(strp, 10);
         bigint bn(bnx);
@@ -210,9 +209,35 @@ public:
         
         getBasePointG1(basePoint);
 
-        vector <G1_Affine_Coordinates<T> >  r_tmp(255);
-        G1Op<T> g1op(P, protocol, preprocessing, processor, output);
-        OnlineOp<T> online_op(P, protocol, preprocessing, processor, output);
+        bigint rcoeff=powerMod(2,128,bn);
+           
+        string rcoeff_str=to_string(rcoeff);
+        
+        mclBnFr r0;
+        mclBnG1 r00;
+        vector <G1_Affine_Coordinates<T> >  r_tmp(256);
+           
+        str_to_mclBnFr(r0,rcoeff_str);
+        mclBnG1_mul(&r00, &basePoint, &r0);
+        clear r0x,r0y;
+            //mclBnG1_to_gfp(point, pre_g1[i]);
+
+        vector<string> mr0;
+        mclBnG1_to_str_new(mr0, r00);
+            // mpz_class bnx(m[1], 10);
+            // bigint bn(bnx);
+            //point.x=bn;
+        online_op.str_to_gfp(r0x, mr0[1]);
+            // mpz_class bnx1(m[2], 10);
+            // bigint bn1(bnx1);
+        online_op.str_to_gfp(r0y, mr0[2]);
+        online_op.get_inputs(0, r_tmp[0].x, r0x);
+        online_op.get_inputs(0, r_tmp[0].y, r0y);
+        
+
+        
+        Timer point_add_time;
+        point_add_time.start();
         for(int i=0;i<255;i++){
             bigint coeff=powerMod(2,i,bn);
             //cout<<"bigbigbig"<<coeff<<endl;
@@ -241,8 +266,37 @@ public:
 
             // cout<<"point.x"<<point.x<< endl;
             // cout<<"point.y"<<point.y<< endl;
+            G1_Affine_Coordinates<T> xq;
 
-            g1op.fixmul_plain_aff(r_tmp[i],srk[i], point);
+            g1op.add_plain_aff(xq,r_tmp[i],point);
+
+            online_op.mul(r_tmp[i+1].x,srk[i],xq.x);
+            online_op.mul(r_tmp[i+1].y,srk[i],xq.y);
+
+            // clear srk1;
+            // online_op.reveal(srk[i],srk1);
+
+            // cout<<"iiiiiiiiii"<<srk1<<endl;
+
+            // clear m3,m4;
+            // online_op.reveal(r_tmp[i+1].x,m3);
+            // cout<<i<<"rtmp"<<m3<<endl;
+            // online_op.reveal(r_tmp[i+1].y,m4);
+            // cout<<i<<"rtmp"<<m4<<endl;
+            
+
+
+            G1_Affine_Coordinates<T> tmp;
+            T f;
+            clear c=1;
+
+            online_op.sub_plain_new(f,c,srk[i]);
+            online_op.mul(tmp.x,f,r_tmp[i].x);
+            online_op.mul(tmp.y,f,r_tmp[i].y);
+            online_op.add_inplace(r_tmp[i+1].x,tmp.x);
+            online_op.add_inplace(r_tmp[i+1].y,tmp.y);
+            
+            //g1op.fixmul_plain_aff(r_tmp[i],srk[i], point);
 
             // clear m3,m4;
             // online_op.reveal(r_tmp[i].x,m3);
@@ -254,41 +308,17 @@ public:
             // online_op.reveal(srk[i],srk1);
 
             // cout<<"iiiiiiiiii"<<srk1<<endl;
-
-
-            T tmp;
-            clear c=1;
-            online_op.sub_plain_new(tmp, c, srk[i]);
-            G1_Affine_Coordinates_Plain<T> o;
-            o.x=0;
-            o.y=0;
-            G1_Affine_Coordinates<T> tmp1;
-            g1op.fixmul_plain_aff(tmp1, tmp, o);
-
-            online_op.add_inplace(r_tmp[i].x,tmp1.x);
-            online_op.add_inplace(r_tmp[i].y,tmp1.y);
-
-
         }
+        point_add_time.stop();
 
         // cout<<"hhhhhhhhhhhh"<<endl;
 
         G1_Affine_Coordinates<T> pk;
-        bool a=0;
-
-        vector<T> h1(1);
-        preprocessing.get_one(DATA_BIT, h1[0]);
-
-        Timer point_add_time;
-        point_add_time.start();
-        pk=r_tmp[0];
-        for(int i=1;i<255;i++){
-           
-            g1op.add_aff_inplace(pk, r_tmp[i]);
-
-        }
-
-        point_add_time.stop();
+        G1_Affine_Coordinates_Plain<T> fr0;
+        clear s=0;
+        fr0.x=r0x;
+        fr0.y=s-r0y;
+        g1op.add_plain_aff(pk,r_tmp[255],fr0);
 
         clear pk_x,pk_y;
         online_op.reveal({pk.x},pk_x);
@@ -314,6 +344,9 @@ void compute_ek(vector<T> &ek,vector<T> &srk,const string &msg, vector<mclBnFr> 
                    typename T::Protocol &protocol, typename T::LivePrep &preprocessing, SubProcessor<T> &processor,
                    typename T::MAC_Check &output)
     {
+        G2Op<T> g2op(P, protocol, preprocessing, processor, output);
+        OnlineOp<T> online_op(P, protocol, preprocessing, processor, output);
+        vector <G2_Affine_Coordinates<T> >  sig_tmp(256);
         
         
         vector<mclBnG2> pre_g2(RSIZE);
@@ -321,9 +354,24 @@ void compute_ek(vector<T> &ek,vector<T> &srk,const string &msg, vector<mclBnFr> 
         
         mclBnG2_hashAndMapTo(&sig, (const char *)msg.c_str(), msg.size());
 
-        vector <G2_Affine_Coordinates<T> >  sig_tmp(255);
-        G2Op<T> g2op(P, protocol, preprocessing, processor, output);
-        OnlineOp<T> online_op(P, protocol, preprocessing, processor, output);
+
+        mclBnG2 r00;
+
+        mclBnG2_mul(&r00, &sig, &coeff_r[128]);
+
+        G2_Affine_Coordinates_Plain<T> point1;
+
+        mclBnG2_to_g2_Plain(point1, r00);
+
+        online_op.get_inputs(0, sig_tmp[0].x.real, point1.x.real);
+        online_op.get_inputs(0, sig_tmp[0].x.imag, point1.x.imag);
+        online_op.get_inputs(0, sig_tmp[0].y.real, point1.y.real);
+        online_op.get_inputs(0, sig_tmp[0].y.imag, point1.y.imag);
+
+        Timer point_add_time;
+        point_add_time.start();
+
+        
         for(int i=0;i<255;i++){
             mclBnG2_mul(&pre_g2[i], &sig, &coeff_r[i]);
             
@@ -331,24 +379,28 @@ void compute_ek(vector<T> &ek,vector<T> &srk,const string &msg, vector<mclBnFr> 
 
             mclBnG2_to_g2_Plain(point, pre_g2[i]);
 
+            G2_Affine_Coordinates<T> xq;
 
-            g2op.fixmul_plain_aff(sig_tmp[i],srk[i], point);
+            g2op.add_plain_aff(xq,sig_tmp[i],point);
 
-            T tmp;
+            online_op.mul(sig_tmp[i+1].x.real,srk[i],xq.x.real);
+            online_op.mul(sig_tmp[i+1].x.imag,srk[i],xq.x.imag);
+            online_op.mul(sig_tmp[i+1].y.real,srk[i],xq.y.real);
+            online_op.mul(sig_tmp[i+1].y.imag,srk[i],xq.y.imag);
+
+            G2_Affine_Coordinates<T> tmp;
+            T f;
             clear c=1;
-            online_op.sub_plain_new(tmp, c, srk[i]);
-            G2_Affine_Coordinates_Plain<T> o;
-            o.x.real=0;
-            o.x.imag=0;
-            o.y.real=0;
-            o.y.imag=0;
-            G2_Affine_Coordinates<T> tmp1;
-            g2op.fixmul_plain_aff(tmp1, tmp, o);
 
-            online_op.add_inplace(sig_tmp[i].x.real,tmp1.x.real);
-            online_op.add_inplace(sig_tmp[i].x.imag,tmp1.x.imag);
-            online_op.add_inplace(sig_tmp[i].y.real,tmp1.y.real);
-            online_op.add_inplace(sig_tmp[i].y.imag,tmp1.y.imag);
+            online_op.sub_plain_new(f,c,srk[i]);
+            online_op.mul(tmp.x.real,f,sig_tmp[i].x.real);
+            online_op.mul(tmp.x.imag,f,sig_tmp[i].x.imag);
+            online_op.mul(tmp.y.real,f,sig_tmp[i].y.real);
+            online_op.mul(tmp.y.imag,f,sig_tmp[i].y.imag);
+            online_op.add_inplace(sig_tmp[i+1].x.real,tmp.x.real);
+            online_op.add_inplace(sig_tmp[i+1].x.imag,tmp.x.imag);
+            online_op.add_inplace(sig_tmp[i+1].y.real,tmp.y.real);
+            online_op.add_inplace(sig_tmp[i+1].y.imag,tmp.y.imag);
 
             // clear m1,m2;
             // online_op.reveal(r_tmp[i].x,m1);
@@ -356,29 +408,27 @@ void compute_ek(vector<T> &ek,vector<T> &srk,const string &msg, vector<mclBnFr> 
             // online_op.reveal(r_tmp[i].y,m2);
             // cout<<i<<"yyyyyyyyy"<<m2<<endl;
         }
-
+        
         // cout<<"hhhhhhhhhhhh"<<endl;
 
         G2_Affine_Coordinates<T> sigek;
-        bool a=0;
 
-        vector<T> h1(1);
-        preprocessing.get_one(DATA_BIT, h1[0]);
-        
-        Timer point_add_time;
-        point_add_time.start();
-        sigek=sig_tmp[0];
-        for(int i=1;i<255;i++){  
-            g2op.add_aff_inplace(sigek, sig_tmp[i]);
 
-        }
+        G2_Affine_Coordinates_Plain<T> fr0;
+        clear s=0;
+        fr0.x.real=point1.x.real;
+        fr0.x.imag=point1.x.imag;
+        fr0.y.real=s-point1.y.real;
+        fr0.y.imag=s-point1.y.imag;
+        g2op.add_plain_aff(sigek,sig_tmp[255],fr0);
+
+        point_add_time.stop();
+
         ek.resize(2);
         ek[0]=sigek.x.real;
         ek[1]=sigek.x.imag;
 
-        point_add_time.stop();
-
-
+    
         cout << "point add time in G2: " << point_add_time.elapsed() << " seconds" << endl;
 
 #if OK_CODE
