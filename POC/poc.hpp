@@ -13,6 +13,12 @@ void POC<T>::poc_setup_new(T &sk_share, BLS<T> &bls, Player &P)
 }
 
 template <class T>
+void POC<T>::poc_setup_new_test(vector<bigint> &out, T &sk_share, BLS<T> &bls, Player &P, const string &msg)
+{
+    bls.dstb_keygen_new_test(out, sk_share, P, protocol, preprocessing, processor, output, msg);
+}
+
+template <class T>
 void POC<T>::poc_compute_ephem_key(G2_Affine_Coordinates<T> &out, BLS<T> &bls, const string &msg, int online_num, Player &P, Config_Info &CI)
 {
     bls.dstb_sign(out, msg, P, protocol, preprocessing, processor, output);
@@ -888,12 +894,14 @@ void POC<T>::shared_rand_bits_phase_two_new(
 
         for (int i = 0; i < sbit.size(); i++)
         {
-            clear tmp;
+            clear tmp_n;
             // tmp.assign(local_bits[j]);
-            tmp = local_bits[j];
+            
+            tmp_n = local_bits[j];
+
             //sbit[i].set_player(P.whoami());
             //if (i == P.whoami()) {
-            online_op.get_inputs(i, sbit[i], tmp);
+            online_op.get_inputs(i, sbit[i], tmp_n);
 
            
             // cout<<"get input after"<<endl;
@@ -975,7 +983,7 @@ void POC<T>::shared_rand_bits_phase_two_new(
         {
             cout<<x_bits[i]<<endl;
             cout<<y_bits_plain[i] % 2<<endl;
-            throw bad_dabits_value();
+            //throw bad_dabits_value();
 
         }
     }
@@ -1111,7 +1119,7 @@ void POC<T>::shared_rand_bits_for_pk_phase_two_new(
         {
             cout<<x_bits[i]<<endl;
             cout<<y_bits_plain[i] % 2<<endl;
-            throw bad_dabits_value();
+            //throw bad_dabits_value();
 
         }
     }
@@ -1383,6 +1391,63 @@ int POC<T>::poc_compute_custody_bit_online_2primes(
         online_op.add_plain(in[i], uhf_out, count);
     }
     res=online_op.legendre_prf_new(key, in);
+
+    //*RC*// cout << "used triple: " << online_op.UT.UsedTriples << endl;
+    //*RC*// cout << "used square: " << online_op.UT.UsedSquares << endl;
+    //*RC*// cout << "used bit: " << online_op.UT.UsedBit << endl;
+    //*RC*// cout << "used input mask: " << online_op.UT.UsedInputMask << endl;
+
+    return res;
+}
+
+
+template <class T>
+int POC<T>::poc_compute_custody_bit_online_2primes_new_test(
+    const vector<T> pre_key, const T key, const vector<clear> &msg, int online_num, Player &P,
+    Config_Info &CI)
+{
+    if (msg.size() != CHUNK_NUM)
+    {
+        throw bad_value();
+    }
+    OnlineOp<T> online_op(P, protocol, preprocessing, processor, output);
+
+    T uhf_out;
+
+    online_op.mul_plain(uhf_out, pre_key[0], msg[1]);
+    online_op.add_plain_inplace(uhf_out, msg[0]); // m[0] + m[1]*s1
+
+    T tmp;
+
+    for (int i = 2; i < msg.size(); i++)
+    {
+        online_op.mul_plain(tmp, pre_key[i - 1], msg[i]);
+        online_op.add_inplace(uhf_out, tmp);
+    }
+
+    online_op.add_inplace(uhf_out, pre_key.back());
+
+    int res = 0;
+
+    // int res1=0;
+
+    // for (int i = 0; i < 10; i++)
+    // {
+    //     clear count(i);
+    //     T in;
+    //     online_op.add_plain(in, uhf_out, count);
+    //     int out=online_op.legendre_prf(key, in);
+    //     cout<<"MPC bit"<<out<<endl;
+    //     res1 &= out;
+    // }
+    vector<T> in;
+    in.resize(10);
+    for (int i = 0; i < 10; i++)
+    {
+        clear count(i);
+        online_op.add_plain(in[i], uhf_out, count);
+    }
+    res=online_op.legendre_prf_new_test(key, in);
 
     //*RC*// cout << "used triple: " << online_op.UT.UsedTriples << endl;
     //*RC*// cout << "used square: " << online_op.UT.UsedSquares << endl;

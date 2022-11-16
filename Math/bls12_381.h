@@ -31,6 +31,7 @@ void print_mclBnG2(const mclBnG2 &a);
 void mclBnFr_to_str(string &str, const mclBnFr &a);
 void mclBnFr_to_str_new(string &str, const mclBnFr &a);
 void str_to_mclBnFr(mclBnFr &out, const string &str);
+void str_to_mclBnFr_new(mclBnFr &out, const string &str);
 
 void mclBnG1_to_str(string &str, const mclBnG1 &a);
 void mclBnG1_to_str_new(vector<string> &str, const mclBnG1 &a);

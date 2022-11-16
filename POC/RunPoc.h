@@ -34,6 +34,7 @@ public:
   void run_init(int argc, char *argv[], Config_Info &CI);
   void run_poc_setup(BLS<T> &bls, Config_Info &CI);
   void run_poc_setup_new(T &sk_share,BLS<T> &bls, Config_Info &CI);
+  void run_poc_setup_new_test(vector<bigint> &out, T &sk_share, BLS<T> &bls, Config_Info &CI,const string &msg);
   void run_offline(Config_Info &CI);
 
   void run_poc_compute_ephem_key(vector<T> &ek, BLS<T> &bls, const string &msg, Config_Info &CI);
@@ -80,6 +81,9 @@ void run_poc_compute_ephem_key_2primes_phase_one_new1(
   void run_poc_compute_custody_bit_offline_2primes(
       vector<T> &pre_key, const vector<T> &keys, Config_Info &CI);
   int run_poc_compute_custody_bit_online_2primes(
+      const vector<T> &pre_key, const T &key, const vector<clear> &msg, Config_Info &CI);
+  
+  int run_poc_compute_custody_bit_online_2primes_test(
       const vector<T> &pre_key, const T &key, const vector<clear> &msg, Config_Info &CI);
 };
 

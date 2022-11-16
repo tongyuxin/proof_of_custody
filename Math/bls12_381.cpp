@@ -90,6 +90,21 @@ void str_to_mclBnFr(mclBnFr &out, const string &str)
     // printf("%s\n", buf);
 }
 
+void str_to_mclBnFr_new(mclBnFr &out, const string &str)
+{
+    //mclBnFr_deserialize(&out, str.c_str(), mclBn_getFrByteSize());
+     
+    //mclBnFr_deserialize(&out, str.c_str(), mclBn_getFrByteSize());
+
+    mclBnFr_setStr(&out, (char *)str.c_str(), str.size(), 10);
+
+
+
+    //  char buf[128];
+    // mclBnFr_getStr(buf, sizeof(buf), &a, 10);
+    // printf("%s\n", buf);
+}
+
 void str_to_mclBnG1(mclBnG1 &out, const string &str)
 {
     mclBnG1_deserialize(&out, str.c_str(), mclBn_getG1ByteSize());

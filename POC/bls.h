@@ -177,6 +177,17 @@ public:
             g2op.add_aff_inplace(out, ac[i]);
         }
 
+
+        clear m1,m2,m3,m4;
+        online_op.reveal(out.x.real,m1);
+        online_op.reveal(out.x.imag,m2);
+        online_op.reveal(out.y.real,m3);
+        online_op.reveal(out.y.imag,m4);
+        cout<<"ek.x.real"<<m1<<endl;
+        cout<<"ek.x.imag"<<m2<<endl;
+        cout<<"ek.y.real"<<m3<<endl;
+        cout<<"ek.y.imag"<<m4<<endl;
+
         cout<<"aff add after"<<endl;
         P.comm_stats.print();
         point_add_time.stop();
@@ -210,14 +221,16 @@ public:
         getBasePointG1(basePoint);
 
         bigint rcoeff=powerMod(2,128,bn);
-           
         string rcoeff_str=to_string(rcoeff);
+
+
         
         mclBnFr r0;
         mclBnG1 r00;
         vector <G1_Affine_Coordinates<T> >  r_tmp(256);
            
-        str_to_mclBnFr(r0,rcoeff_str);
+        str_to_mclBnFr_new(r0,rcoeff_str);
+
         mclBnG1_mul(&r00, &basePoint, &r0);
         clear r0x,r0y;
             //mclBnG1_to_gfp(point, pre_g1[i]);
@@ -235,15 +248,12 @@ public:
         online_op.get_inputs(0, r_tmp[0].y, r0y);
         
 
-        
-        Timer point_add_time;
-        point_add_time.start();
         for(int i=0;i<255;i++){
             bigint coeff=powerMod(2,i,bn);
             //cout<<"bigbigbig"<<coeff<<endl;
             string coeff_str=to_string(coeff);
             //cout<<"stringinginnig"<<coeff_str.c_str()<<endl;
-            str_to_mclBnFr(coeff_r[i],coeff_str);
+            str_to_mclBnFr_new(coeff_r[i],coeff_str);
             //print_mclBnFr(coeff_r[i]);
             mclBnG1_mul(&pre_g1[i], &basePoint, &coeff_r[i]);
             //print_mclBnG1(pre_g1[i]);
@@ -273,18 +283,6 @@ public:
             online_op.mul(r_tmp[i+1].x,srk[i],xq.x);
             online_op.mul(r_tmp[i+1].y,srk[i],xq.y);
 
-            // clear srk1;
-            // online_op.reveal(srk[i],srk1);
-
-            // cout<<"iiiiiiiiii"<<srk1<<endl;
-
-            // clear m3,m4;
-            // online_op.reveal(r_tmp[i+1].x,m3);
-            // cout<<i<<"rtmp"<<m3<<endl;
-            // online_op.reveal(r_tmp[i+1].y,m4);
-            // cout<<i<<"rtmp"<<m4<<endl;
-            
-
 
             G1_Affine_Coordinates<T> tmp;
             T f;
@@ -296,29 +294,22 @@ public:
             online_op.add_inplace(r_tmp[i+1].x,tmp.x);
             online_op.add_inplace(r_tmp[i+1].y,tmp.y);
             
-            //g1op.fixmul_plain_aff(r_tmp[i],srk[i], point);
-
-            // clear m3,m4;
-            // online_op.reveal(r_tmp[i].x,m3);
-            // cout<<i<<"rtmp"<<m3<<endl;
-            // online_op.reveal(r_tmp[i].y,m4);
-            // cout<<i<<"rtmp"<<m4<<endl;
-            
-            // clear srk1;
-            // online_op.reveal(srk[i],srk1);
-
-            // cout<<"iiiiiiiiii"<<srk1<<endl;
         }
-        point_add_time.stop();
 
-        // cout<<"hhhhhhhhhhhh"<<endl;
+
 
         G1_Affine_Coordinates<T> pk;
         G1_Affine_Coordinates_Plain<T> fr0;
         clear s=0;
         fr0.x=r0x;
         fr0.y=s-r0y;
+
+        Timer point_add_time;
+        point_add_time.start();
+        
         g1op.add_plain_aff(pk,r_tmp[255],fr0);
+
+        point_add_time.stop();
 
         clear pk_x,pk_y;
         online_op.reveal({pk.x},pk_x);
@@ -368,8 +359,7 @@ void compute_ek(vector<T> &ek,vector<T> &srk,const string &msg, vector<mclBnFr> 
         online_op.get_inputs(0, sig_tmp[0].y.real, point1.y.real);
         online_op.get_inputs(0, sig_tmp[0].y.imag, point1.y.imag);
 
-        Timer point_add_time;
-        point_add_time.start();
+
 
         
         for(int i=0;i<255;i++){
@@ -420,6 +410,10 @@ void compute_ek(vector<T> &ek,vector<T> &srk,const string &msg, vector<mclBnFr> 
         fr0.x.imag=point1.x.imag;
         fr0.y.real=s-point1.y.real;
         fr0.y.imag=s-point1.y.imag;
+
+        Timer point_add_time;
+        point_add_time.start();
+
         g2op.add_plain_aff(sigek,sig_tmp[255],fr0);
 
         point_add_time.stop();
@@ -472,6 +466,126 @@ void compute_ek(vector<T> &ek,vector<T> &srk,const string &msg, vector<mclBnFr> 
             
         }
     }
+
+
+    void dstb_keygen_new_test(vector<bigint> &out, T &sk_share,Player &P,typename T::Protocol &protocol, typename T::LivePrep &preprocessing, SubProcessor<T> &processor,
+                   typename T::MAC_Check &output, const string &msg)
+    {
+        VSS v(nparty, threshold);
+        vector<bls_sk> shs;
+        vector<bls_vk> aux;
+        v.rnd_secret();
+        mclBnFr a=v.get_secret();
+        OnlineOp<T> online_op(P, protocol, preprocessing, processor, output);
+        vector<T> sk_tmp(P.num_players());
+     
+        string a1;
+        mclBnFr_to_str_new(a1,a);
+        
+        printf("%s",a1.c_str());
+        
+        mpz_class bnx(a1, 10);
+        bigint bn(bnx);
+
+        //clear q=1;
+
+        for(int i=0;i<sk_tmp.size();i++){
+            online_op.get_inputs(i,sk_tmp[i], bn);
+        }
+
+        sk_share=sk_tmp[0];
+        for(int i=1;i<sk_tmp.size();i++){
+            online_op.add_inplace(sk_share , sk_tmp[i]);
+            
+        }
+
+        clear sk_mpc,sk_mpc1;
+        online_op.reveal(sk_share,sk_mpc);
+        //to_gfp(sk_mpc1, sk_mpc);
+        cout<<"mpc sksksksksksk"<<endl;
+        cout<<sk_mpc<<endl;
+
+
+        string a2;
+        mclBnFr_to_str(a2,a);
+
+        octetStream sk_str(a2.size(), (const octet *)a2.data());
+        P.send_all(sk_str);
+        vector<octetStream> sk_rev(P.num_players()); // OpenAux(P.num_players());
+        P.receive_all(sk_rev);
+
+        mclBnFr m;
+        mclBnFr sk_plain=a;
+
+        cout<<"hhhhhhhhhh"<<endl;
+        print_mclBnFr(sk_plain);
+        for (int i = 0; i < P.num_players(); i++)
+        {
+            if (i != P.my_num())
+            {
+                string ss;
+                ss.assign((char *)sk_rev[i].get_data(), sk_rev[i].get_length()); // opt. yyltodo
+                str_to_mclBnFr(m, ss);
+                cout<<"mmmmmmmm"<<endl;
+                print_mclBnFr(m);
+                mclBnFr_add(&sk_plain,&sk_plain,&m);
+            }
+        }
+
+        cout<<"sk plain new: "<<endl;
+
+        print_mclBnFr(sk_plain);
+
+        string an;
+        mclBnFr_to_str_new(an,sk_plain);
+        
+        printf("%s",an.c_str());
+        
+        mpz_class bnx1(an, 10);
+        bigint bn1(bnx1);
+
+        vector<clear> sk_bit;
+        online_op.decompose(sk_bit,bn1,RSIZE);
+        cout<<"plain sk bit"<<endl;
+        for(int i=0;i<sk_bit.size();i++){
+            cout<<sk_bit[i];
+        }
+        cout<<"plain sk bit end"<<endl;
+
+
+                   
+        mclBnG1 basePoint;
+        mclBnG1 pkplain;
+        
+        getBasePointG1(basePoint);
+        mclBnG1_mul(&pkplain, &basePoint, &sk_plain); 
+        
+        cout<<"pk plain new: "<<endl;
+        print_mclBnG1(pkplain);
+
+        
+        mclBnG2 wu;
+        mclBnG2_hashAndMapTo(&wu, (const char *)msg.c_str(), msg.size()); 
+
+        mclBnG2_mul(&wu, &wu, &sk_plain); 
+
+        cout<<"signature plain new: "<<endl;
+        print_mclBnG2(wu);
+
+        vector<string> sigma_str;
+        mclBnG2_to_str(sigma_str,wu);
+        out.resize(4);
+        for(int i = 0; i < sigma_str.size(); i++)
+        {
+            mpz_class bnx(sigma_str[i], 10);
+            bigint bn(bnx);
+            //to_gfp(out[i], bn);
+            out[i]=bn;
+        }
+
+
+    }
+
 
 
 

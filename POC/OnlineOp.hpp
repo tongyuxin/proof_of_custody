@@ -1397,9 +1397,91 @@ int OnlineOp<T>::legendre_prf_new(const T &key, const vector<T> &in)
     mul_plain_inplace(t_tmp[i],u[i]);
     add_plain_inplace(t_tmp[i],1);
     t_tmp[i]=t_tmp[i]/2;
-    // clear out;
-    // reveal({t_tmp[i]}, out);
-    // cout<<"nnnnnnnnnnnnn"<<out<<endl;
+  }
+
+
+  T out_n;
+  KAND(out_n,t_tmp,t_tmp.size());
+
+
+  clear out;
+  reveal({out_n}, out);
+
+
+  bigint outnew;
+  to_bigint(outnew, out);
+  string outout=to_string(outnew);
+  // bn = ceil(double(bn.get_mpz_t() + 1) / 2);
+  
+
+  // vector<int> out(10),res(10);
+  int cus=stoi(outout);
+
+  // for(int i=0;i<10;i++){
+  //   bigint bn;
+  //   to_bigint(bn, c[i]);
+  //   out[i] = mpz_legendre(bn.get_mpz_t(), clear::pr().get_mpz_t());
+  //   res[i] = ceil(double(out[i] + 1) / 2);
+  //   cout<<"MPC bit"<<res[i]<<endl;
+  //   cus &= res[i];
+  // }
+
+  return cus;
+}
+
+
+template <class T>
+int OnlineOp<T>::legendre_prf_new_test(const T &key, const vector<T> &in)
+{
+  vector<T> tmp;
+  vector<T> s0(10),s1(10),s2(10),b0(10),b_tmp(10);
+  tmp.resize(in.size());
+  
+  // cout<<"get two before"<<endl;
+  // P.comm_stats.print();
+
+  for(int i=0;i<in.size();i++){
+    add(tmp[i], key, in[i]);
+    preprocessing.get_two(DATA_SQUARE, s0[i], s1[i]);//s0=a,s1=a^2
+    preprocessing.get_one(DATA_BIT, b0[i]);
+  }
+
+  clear r_p = 3;
+
+  // bigint r_pub;
+  // to_bigint(r_pub, r_p);
+  // int ccc = mpz_legendre(r_pub.get_mpz_t(), clear::pr().get_mpz_t());
+  // cout<<"ccc dddddddddddddddd"<< ccc << endl;
+  for(int i=0;i<in.size();i++){
+    mul_plain(b_tmp[i],b0[i],r_p);
+    T sb = T::constant(r_p, P.my_num(), processor.MC.get_alphai());
+    b_tmp[i] = sb-b_tmp[i];
+    add_inplace(b_tmp[i],b0[i]);
+  }
+
+  mul(s2, s1, b_tmp);
+  vector<T> s3(10);
+  mul(s3,s2,tmp);
+
+  vector<clear> c(10);
+  reveal({s3}, c);
+
+
+
+  vector<T> y_tmp(10),t_tmp(10);
+  vector<int> u(10);
+  for(int i=0;i<10;i++){
+    bigint bn;
+    to_bigint(bn, c[i]);
+    u[i] = mpz_legendre(bn.get_mpz_t(), clear::pr().get_mpz_t());
+    mul_plain(t_tmp[i],b0[i],2);
+    sub_plain_inplace(t_tmp[i],1);
+    mul_plain_inplace(t_tmp[i],u[i]);
+    add_plain_inplace(t_tmp[i],1);
+    t_tmp[i]=t_tmp[i]/2;
+    clear out;
+    reveal({t_tmp[i]}, out);
+    cout<<"mpc bit"<<out<<endl;
   }
 
 

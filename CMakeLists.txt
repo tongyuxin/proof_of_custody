@@ -72,4 +72,5 @@ endfunction()
 #compile_poc_programs(poc_main2fork_new)
 #compile_poc_programs(poc_main2fork_test)
 compile_poc_programs(poc_main2fork_three)
+#compile_poc_programs(poc_main2fork_three_test)
 

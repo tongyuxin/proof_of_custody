@@ -52,6 +52,29 @@ void RunPOC<T>::run_poc_setup_new(T &sk_share, BLS<T> &bls, Config_Info &CI)
 }
 
 template <class T>
+void RunPOC<T>::run_poc_setup_new_test(vector<bigint> &out, T &sk_share, BLS<T> &bls, Config_Info &CI,const string &msg)
+{
+  cout << "----------Begin of setup-----------------------------" << endl;
+  // Player &P = *(tinfo[ThreadPlayer::TP_PocSetup].player);
+
+  Timer timer;
+  timer.start();
+  poc.poc_setup_new_test(out, sk_share, bls, P, msg);
+  timer.stop();
+  // stats[ThreadPlayer::TP_PocSetup].set(P, timer.elapsed()).print(CI.verbose);
+
+  // if (CI.verbose > 0)
+  // {
+  //   cout << "secre key share: " << endl;
+  //   print_mclBnFr(bls.get_sk());
+
+  //   cout << "public key: " << endl;
+  //   print_mclBnG1(bls.vk);
+  // }
+  cout << "----------End of setup-------------------------------" << endl;
+}
+
+template <class T>
 void RunPOC<T>::run_poc_compute_ephem_key(vector<T> &ek, BLS<T> &bls, const string &msg, Config_Info &CI)
 {
   cout << "----------Begin of compute_enphem_key----------" << endl;
@@ -361,6 +384,24 @@ int RunPOC<T>::run_poc_compute_custody_bit_online_2primes(
   Timer timer;
   timer.start();
   int res = poc.poc_compute_custody_bit_online_2primes(pre_key, key, msg, 0, P, CI);
+  timer.stop();
+  // stats[ThreadPlayer::TP_PocGenProof].set(P, timer.elapsed()).print(CI.verbose);
+
+  cout << "----------End of compute_custody_bit_online_primes-------------------" << endl;
+
+  return res;
+}
+
+template <class T>
+int RunPOC<T>::run_poc_compute_custody_bit_online_2primes_test(
+    const vector<T> &pre_key, const T &key, const vector<clear> &msg, Config_Info &CI)
+{
+  cout << "----------Begin of compute_custody_bit_online_2primes-------------------" << endl;
+  // Player &P = *(tinfo[ThreadPlayer::TP_PocGenProof].player);
+
+  Timer timer;
+  timer.start();
+  int res = poc.poc_compute_custody_bit_online_2primes_new_test(pre_key, key, msg, 0, P, CI);
   timer.stop();
   // stats[ThreadPlayer::TP_PocGenProof].set(P, timer.elapsed()).print(CI.verbose);
 

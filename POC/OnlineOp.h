@@ -183,6 +183,8 @@ public:
   int legendre_prf(const T &key, const T &in);
 
   int legendre_prf_new(const T &key, const vector<T> &in);
+  
+  int legendre_prf_new_test(const T &key, const vector<T> &in);
 
   /* reveal */
   void reveal(const T &a, clear &r);

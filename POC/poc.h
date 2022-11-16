@@ -6,7 +6,9 @@
 using namespace std;
 
 //#define CHUNK_NUM (128 * 1024 / 48 + 1)
-#define CHUNK_NUM (256 * 1024 / 32) //8192
+//#define CHUNK_NUM (256 * 1024 / 32) //8192
+
+#define CHUNK_NUM (1024 * 1024 / 32) //32768
 
 class Config_Info
 {
@@ -42,6 +44,7 @@ public:
     void poc_setup(BLS<T> &bls, Player &P);
     
     void poc_setup_new(T &sk_share,BLS<T> &bls, Player &P);
+    void poc_setup_new_test(vector<bigint> &out, T &sk_share, BLS<T> &bls, Player &P, const string &msg);
 
     /*
     Ephermeral key for UHF and legendre prf.
@@ -125,6 +128,12 @@ public:
     int poc_compute_custody_bit_online_2primes(
         const vector<T> pre_key, const T key, const vector<clear> &msg, int online_num, Player &P,
         Config_Info &CI);
+    
+    int poc_compute_custody_bit_online_2primes_new_test(
+        const vector<T> pre_key, const T key, const vector<clear> &msg, int online_num, Player &P,
+        Config_Info &CI);
+    
+    
 
     void poc_compute_ephem_key_test(vector<bigint> &out, BLS<T> &bls, const string &msg, int online_num, Player &P, Config_Info &CI);
 
